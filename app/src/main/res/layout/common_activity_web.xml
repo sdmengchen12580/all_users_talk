@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/web_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+
+    <RelativeLayout
+        android:id="@+id/web_bottom_nagetive"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="#949dd4"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/webview_return"
+            android:textColor="#e6e6ec" />
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/finish"
+            android:background="@null"
+            android:text="@string/webview_back"
+            android:textColor="#e6e6ec" />
+
+        <Button
+            android:id="@+id/forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/back"
+            android:background="@null"
+            android:text="@string/webview_forward"
+            android:textColor="#e6e6ec" />
+
+        <Button
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/forward"
+            android:background="@null"
+            android:text="@string/webview_refresh"
+            android:textColor="#e6e6ec" />
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/refresh"
+            android:background="@null"
+            android:text="@string/webview_stop_refresh"
+            android:textColor="#e6e6ec" />
+
+    </RelativeLayout>
+
+    <com.example.yunwen.cloud_tts.custom.SpringView
+        android:id="@+id/spring_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/web_bottom_nagetive"
+        android:background="#797a7d"
+        app:header="@layout/header_web"
+        app:type="overlap">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.example.yunwen.cloud_tts.custom.SpringView>
+
+
+</RelativeLayout>

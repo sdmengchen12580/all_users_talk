@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_time"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/gf_5dp"
+        android:background="@drawable/custom_chatinput_empty"
+        android:paddingLeft="@dimen/gf_15dp"
+        android:paddingRight="@dimen/gf_15dp"
+        android:text="11:18"
+        android:textColor="@color/gf_white"
+        android:textSize="@dimen/gf_14sp"
+        android:visibility="gone" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/PersonPic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/head" />
+
+    <TextView
+        android:id="@+id/chat_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_time"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@id/PersonPic"
+        android:textColor="@android:color/darker_gray" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chat_tv_name"
+        android:layout_toLeftOf="@id/PersonPic"
+        android:background="@drawable/chatto_bg">
+
+        <TextView
+            android:id="@+id/text_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:textColor="#f9f8f7"
+            android:textSize="@dimen/front_Size" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_isSpeaking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/speaking"
+        android:visibility="gone" />
+</RelativeLayout>

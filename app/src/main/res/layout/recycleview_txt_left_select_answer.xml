@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/chatfrom_bg"
+    android:orientation="vertical">
+
+    <org.faqrobot.text.custom.richtext.RichText
+        android:id="@+id/text_show_webview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/front_Size"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/front_Size" />
+
+    </RelativeLayout>
+
+    <org.faqrobot.text.custom.flowlayout.TagFlowLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/id_flowlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:visibility="gone"
+        app:max_select="1" />
+
+    <LinearLayout
+        android:id="@+id/answer_01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_04"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_05"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_06"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_07"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_07"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_07"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_08"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_08"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_08"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_09"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_09"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_09"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/answer_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/answer_01_numbwe_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/recycleview_txt_item_number"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="@string/text_more_number"
+            android:textColor="@color/txt_txt_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+
+        <Button
+            android:id="@+id/answer_01_button_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textColor="@color/txt_more_answer_color"
+            android:textSize="@dimen/candidateFrontSize" />
+    </LinearLayout>
+
+</LinearLayout>

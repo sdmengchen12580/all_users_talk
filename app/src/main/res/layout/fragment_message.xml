@@ -1,0 +1,74 @@
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context="org.faqrobot.text.ui.tabfragment.MessageFragment">
+
+
+    <TextView
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#90ffffff"
+        android:textSize="25sp"
+        android:text="最新公告"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="羽毛球活动通知"
+            android:textColor="#90ffffff"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/img_dianzan"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="200dp"
+            android:src="@drawable/dianzan" />
+
+        <TextView
+            android:textColor="#90ffffff"
+            android:id="@+id/number_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="20"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:background="@drawable/four_stadius"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/yumaoqiu"
+        android:layout_width="500dp"
+        android:layout_height="250dp" />
+
+    <TextView
+        android:textColor="#90ffffff"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="40dp"
+        android:textSize="15sp"
+        android:text="Friendship.Your friend is your needs answered.He is your field which you sow with love and reap with thanksgiving.And he is your board and your fireside.For you come to him with your hunger, and you seek him for peace.When your friend speaks his mind you fear not the nay in your own mind, nor do you withhold the And when he is silent your heart ceases not to listen to his heart;For without words, in friendship"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

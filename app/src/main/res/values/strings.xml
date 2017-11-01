@@ -1,0 +1,183 @@
+<resources>
+    <string name="app_name">Text</string>
+
+    <string name="menu_settings">Settings</string>
+    <string name="yzs_main_function">云知声智能语音交互平台</string>
+    <string name="yzs_introduction">云知声智能语音交互平台提供语音理解(语音云和语义云)服务。
+        本 SDK 帮助开发者开发基于语音识别、语义理解及语音合成需求的客户端软件。</string>
+    <string name="lbl_set_domain">识别领域</string>
+    <string name="lbl_set_language">语  言</string>
+    <string name="btn_close_config">完成</string>
+    <string name="lbl_set_rate">采样率</string>
+    <string name="recognizer">开始识别</string>
+    <string name="start_tts">开始合成</string>
+    <string name="start_activate">开始激活</string>
+    <string name="stop_tts">停止合成</string>
+    <string name="title_name">云知声语音示例</string>
+    <string name="select_setting">选择设置</string>
+    <string name="general">通用识别</string>
+    <string name="poi">地名识别</string>
+    <string name="song">歌名识别</string>
+    <string name="movietv">影视名识别</string>
+    <string name="medical">医药领域识别</string>
+    <string name="volume">当前说话的音量  : </string>
+    <string name="status">状态  : </string>
+    <string name="please_speak">请说话</string>
+    <string name="speaking">说话中</string>
+    <string name="recognizer_result">识别结果 :</string>
+    <string name="say_over">说完了</string>
+    <string name="click_say">点击说话</string>
+    <string name="no_hear_sound">没有听到声音</string>
+    <string name="info_upload_success">个性化信息上传成功</string>
+    <string name="give_up"> 放弃</string>
+    <string name="opening_recode_devices"> 正在打开录音设备</string>
+    <string name="just_recognizer">正在识别</string>
+    <string name="chinese">普通话</string>
+    <string name="english">英语</string>
+    <string name="cantonese">粤语</string>
+    <string name="test_tts_source"> 北京云知声信息技术有限公司，是专注于语音识别及语言处理技术的移动互联网公司，拥有完全自主知识产权的世界顶尖的智能语音识别和语义理解技术。
+        借助云计算平台和移动互联网技术，云知声已推出了一系列语音识别和语义理解的中间件及服务云平台，为互联网企业和用户提供专业的智能语音服务。</string>
+    <string name="activate_explain">激活您所使用的SDK，建议在app启动和app状态改变时调用，以及时向服务器提供最新的设备信息，可以给您提供更好的语音服务。</string>
+    <string name="function_select">功能选择</string>
+    <string name="asr_online_function">在线识别</string>
+    <string name="asr_offline_function">本地识别</string>
+    <string name="wakeup_offline_function">本地唤醒</string>
+    <string name="tts_offline_function">本地合成</string>
+    <string name="activate_function">激活功能</string>
+    <string name="lable_status">识别状态:</string>
+    <string name="button_asr_start">开始</string>
+    <string name="button_asr_stop">停止</string>
+    <string name="recognizer_result_text">语音识别结果</string>
+    <string name="nlu_result_text">语义解析结果</string>
+    <string name="register_text">云知声专注于智能语音识别及语言处理技术，拥有完全自主知识产权的世界顶尖的智能语音识别技术</string>
+    <string name="tip">提示:  请在点击 注册 按钮之后大声朗读下面这条文本，朗读完之后点击 停止录音 完成声纹注册(用户ID随机生成)。
+         声纹注册成功之后点击 验证 按钮验证已注册的声纹</string>
+    <string name="wakeup_asr_online_function">离线唤醒+混合识别</string>
+    <string name="say_instruction">请说出指令</string>
+    <string name="online_recognizer_result_text">在线识别结果</string>
+    <string name="offline_recognizer_result_text">离线识别结果</string>
+
+
+    <!--ChatView-->
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="chat_press_talk">点击屏幕取消机器人播报。</string>
+    <string name="chat_release_send">已经取消了机器人的播报。</string>
+    <string name="chat_image_preview_send">发送</string>
+    <string name="main_activity_title">江苏电力正在为您服务</string>
+    <!-- time -->
+    <string name="time_yesterday">昨天</string>
+    <string name="time_day">日</string>
+    <string name="time_month">月</string>
+    <string name="time_year">年</string>
+    <string name="time_more">99+</string>
+    <!--Dialog-->
+    <string name="text_begin">请开始说话…</string>
+    <string name="pref_key_iat_show">iat_show</string>
+    <string name="robat_name">无限极客服</string>
+    <string name="main_title">欢迎光临，南京城北供电营业厅</string>
+    <string name="error_no_sdcard">没有SD卡，无法存储录音数据</string>
+    <string name="error_state_record">正在录音中，请先停止录音</string>
+    <string name="error_unknown">无法识别的错误</string>
+    <string name="noResult">很抱歉，我还在成长中，暂时无法回答您的疑问，如有需要请联系4008001188</string>
+    <string name="TxtExitWord">你去休息吧</string>
+    <string name="enterSystemWorld_01">小极</string>
+    <string name="enterSystemWorld_07">小鸡</string>
+    <string name="enterSystemWorld_02">芝麻开门</string>
+    <string name="enterSystemWorld_03">小极你好</string>
+    <string name="enterSystemWorld_04">小吉</string>
+    <string name="enterSystemWorld_05">消极</string>
+    <string name="enterSystemWorld_06">小计</string>
+    <string name="exit_speak_world">你去休息吧</string>
+
+
+    <string name="suggest_word">您是否要咨询以下问题，请点击进行选择：</string>
+    <string name="suggestion_word">您是不是要咨询以下问题，请点击进行选择：</string>
+    <string name="web_refresh">网页由 云问科技 提供</string>
+    <string name="web_refresh_fu">正在为您刷新界面</string>
+    <string name="quicl_server_title">该功能在建设中</string>
+    <string name="webview_return">返回</string>
+    <string name="webview_back">后退</string>
+    <string name="webview_forward">前进</string>
+    <string name="webview_refresh">刷新</string>
+    <string name="webview_stop_refresh">停止载入</string>
+    <string name="edit_text_content">在这里你可以和客服小极聊天哦</string>
+    <string name="nothing_worf">小极没有听懂您说的话，想再听一次</string>
+    <string name="url_nothinh_result"><![CDATA[<p>很抱歉，我还在成长阶段，暂时无法回答您刚才的疑问，如有需要请联系4008001188人工服务，或点击蓝色字体<a href=\"javascript:;\" class=\"robot_people\" style=\"color: rgb(81, 124, 175); text-decoration: none;\">人工客服</a>进行咨询，感谢您的支持。</p>]]></string>
+    <string name="company">由云问科技提供</string>
+    <string name="chatinput_start_listener">小电正在聆听</string>
+    <string name="init_listener">当前正在播报，点击屏幕进行取消</string>
+    <string name="text_more_number"><![CDATA[->]]></string>
+    <string name="StartActivity_Toast_Welcome">小电看到您了</string>
+    <string name="app_id">5716e13c</string>>
+    <!--tablayout使用的-->
+    <string-array name="tablayout">
+        <item>热点咨询</item>
+        <item>信息查询</item>
+        <!--<item>服务评价</item>-->
+        <!--<item>无限极</item>-->
+    </string-array>
+    <string-array name="SpeechWelcome">
+        <item>亲，好久不见，最近过得好么？</item>
+        <item>客官，小极让您久等了！</item>
+        <item>亲，欢迎光临，么么哒，爱你哦！</item>
+        <item>亲，有啥需要小极帮忙的地方么？</item>
+        <item>欢迎观临，小极在这里约定你哦！</item>
+        <item>终于等到你，还好我没放弃！</item>
+        <item>亲，见到你真好，么么哒！</item>
+        <item>我是您的智能机器人小极哦，来@我吧！</item>
+        <item>我很丑，可是我很聪明，来点我吧！</item>
+        <item>亲，今天精神好好哦，棒棒哒！</item>
+        <item>亲，累了吧！欢迎进店休息一下哦！</item>
+        <item>天气易变，请注意身体哦！</item>
+        <item>我是智能小极，有事我帮您！</item>
+        <item>初次见面，很高兴认识你哦！</item>
+        <item>有朋自远方来，嘻嘻太开心啦！</item>
+        <item>撸起袖子加油干，咨询点我吧！</item>
+        <item>亲，您来啦，就知道您棒棒哒！</item>
+        <item>hi，一起来打个招呼吧，么么哒！</item>
+        <item>亲，您终于上线了，久违啦！</item>
+        <item>伙伴们，宝宝恭候很久了！</item>
+    </string-array>
+    <string-array name="FcaeDetecetionWelcome">
+        <item>欢迎您的光临</item>
+        <item>无限极为您服务</item>
+        <item>亲，你来啦，无限极欢迎您</item>
+        <item>无限极守护在您的身边</item>
+        <item>赏过山川大海，品过琼浆玉酿，却没有看过如此美丽的你</item>
+        <item>欢迎光临，有什么可以帮您</item>
+        <item>欢迎光临，您今天棒棒哒</item>
+        <item>有朋自远方来，不亦乐乎</item>
+        <item>欢迎光临，能和我说说话吗</item>
+        <item>Hi，欢迎光临</item>
+        <item>Hi，好久不见</item>
+        <item>亲，你来啦</item>
+        <item>您好，欢迎来到江苏电力有限公司</item>
+        <item>Hi，一直在这等你哦</item>
+        <item>亲，来点我吧</item>
+    </string-array>
+    <string-array name="OnClickWelcome">
+        <item>Hi，欢迎光临</item>
+        <item>Hi，好久不见</item>
+        <item>亲，你来啦</item>
+        <item>您好，欢迎来到江苏电力有限公司</item>
+        <item>Hi，小电一直在这等你哦</item>
+        <item>亲，来点我吧</item>
+        <item>您好，初次见面，亲多多关照哦</item>
+        <item>Hi，我是您的多功能机器人哦</item>
+        <item>亲，好久不见，又变年轻了</item>
+        <item>我是智能机器人小电，很高兴为您服务哦</item>
+        <item>欢迎光临，您今天棒棒哒</item>
+        <item>有朋自远方来，不亦乐乎</item>
+        <item>欢迎光临，能和我说说话吗</item>
+        <item>hi，今天么么哒，么么哒</item>
+        <item>hi，来咨询我吧，我知道很多业务知识哦</item>
+        <item>欢迎光临，我等着为您服务哦</item>
+        <item>hi，我是小电，我很丑可是很聪明</item>
+        <item>欢迎光临，有什么可以帮您</item>
+        <item>您好呀，有事情就来找我吧</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

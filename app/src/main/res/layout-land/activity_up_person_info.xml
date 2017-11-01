@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tab_background"
+    android:orientation="vertical"
+    tools:context="org.faqrobot.text.ui.UpPersonInfoActivity">
+
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="800dp"
+        android:layout_height="320dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:layout_marginTop="60dp"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:background="@drawable/four_stadius"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/imgzxing" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="手机扫码上传/重新扫码"
+                android:textColor="#90ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="60dp"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/four_stadius"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_takephoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/imgtakephoto" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="拍照上传/重新拍摄"
+                android:textColor="#90ffffff"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="称呼："
+            android:textColor="#90ffffff"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="225dp"
+            tools:layout_editor_absoluteY="387dp" />
+
+
+        <EditText
+            android:theme="@style/MyEditText"
+            android:textCursorDrawable="@drawable/edittext_cursor_color"
+            android:id="@+id/et_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入您的姓名"
+            android:textSize="20sp"
+            android:textColorHint="#90ffffff"
+            tools:layout_editor_absoluteX="296dp"
+            tools:layout_editor_absoluteY="376dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:id="@+id/button_up"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/four_button_corner"
+        android:text="点击上传"
+        android:textColor="#90ffffff"
+        android:textSize="20sp"
+        />
+
+
+    <View
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
