@@ -139,7 +139,6 @@ public class InitTts {
         /**开启可变结果*/
         mUnderstander.setOption(SpeechConstants.ASR_OPT_TEMP_RESULT_ENABLE, true);
         /**设置语义场景*/
-        // TODO: 2017/9/28 可以选择
         mUnderstander.setOption(SpeechConstants.NLU_SCENARIO, "videoDefault");
         /**在收到 onRecognizerStart 回调前，录音设备没有打开，请添加界面等待提示*/
         /**修改识别语音*/
@@ -316,8 +315,10 @@ public class InitTts {
                         // 开始播放回调
                         break;
                     case SpeechConstants.TTS_EVENT_PLAYING_END:
+                        Log.e("—————语音识别播报的类———————", "播报完成");
+                        if(minterface_give_fragment_to_use!=null){
                             minterface_give_fragment_to_use.inter_speck_end();
-                            Log.e("—————语音识别播报的类———————", "播报完成");
+                        }
                         // 播放完成回调
                         break;
                     case SpeechConstants.TTS_EVENT_PAUSE:

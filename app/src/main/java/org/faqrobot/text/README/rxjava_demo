@@ -1,0 +1,97 @@
+ 1.activity中使用
+ private void get_Info() {
+        getInfo_retrofit= Base_Okhttp_Rxjava.getInstance().geterver().getSearchBook("金瓶梅", null, 0, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MyBean> (){
+                    @Override
+                    public void onCompleted() {
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("_______onError_______: ", e.toString());
+                    }
+                    @Override
+                    public void onNext(MyBean myBean) {
+                        /**这里可以直接更新ui，不需要runonuithread*/
+                        Log.e("_______onNext_______: ","OK" );
+                        textView.setText(myBean.getCount()+"");
+                    }
+});
+
+2.工具类的rxjava
+public class Base_Okhttp_Rxjava {
+
+    private static final int DEFAULT_TIMEOUT = 3;
+    private OkHttpClient okHttpClient;
+    private MyApi rxjava_api;
+
+    /**在访问HttpMethods时创建单例——通过静态内部类去实例化类*/
+    private static class SingletonHolder {
+        private static final Base_Okhttp_Rxjava INSTANCE = new Base_Okhttp_Rxjava();
+    }
+
+    /**单例*/
+    public static Base_Okhttp_Rxjava getInstance(){
+        return SingletonHolder.INSTANCE;
+    }
+
+    private Base_Okhttp_Rxjava(){
+        File cacheFile = new File(MApplication.getContext().getCacheDir(), "response");
+        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
+        /**拦截器*/
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        /**共用okhttp*/
+        okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .cache(cache)
+                .build();
+
+        /**共用Retrofit*/
+        Retrofit mRetrofit = new Retrofit.Builder()
+                .baseUrl(Config.BASEURL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        rxjava_api = mRetrofit.create(MyApi.class);
+    }
+
+    /**对外提供获取接口对象的方法*/
+    public MyApi geterver() {
+        return rxjava_api;
+    }
+}
+
+
+3.rxjava的接口
+public interface MyApi {
+    @GET("book/search")
+    Observable<MyBean> getSearchBook(@Query("q") String name,
+                                     @Query("tag") String tag,
+                                     @Query("start") int start,
+                                     @Query("count") int count);
+}
+
+4.依赖
+
+ext {
+    recyclerview_version="25.3.1"
+    butterknife_version="8.4.0"
+    retrofit2_version="2.1.0"
+    rxjava_version="1.1.0"
+    interceptor_version="3.7.0"
+}
+//在dependencies上面
+dependencies {
+    /**网络*/
+    compile "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2_version"
+    compile "io.reactivex:rxjava:$rxjava_version"
+    compile "io.reactivex:rxandroid:$rxjava_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$interceptor_version"

@@ -1,0 +1,42 @@
+ /**
+     * 5.机器人下线接口
+     * s=offline
+     * sourceId=9
+     * clientId=一串数字
+     */
+    @POST("servlet/ApiChat")
+    Observable<KeeyRobatOnlion> getRobotLeaving(@Query("access_token") String access_token,
+                                                @Query("s") String s,
+                                                @Query("clientId") String clientId,
+                                                @Query("sourceId") int sourceId);
+
+      /**
+       * 6.转人工接口
+     　* sneedperson
+     　* sourceId=9
+     　* clientId=一串数字
+     　*/
+    @POST("servlet/ApiChat")
+    Observable<KeeyRobatOnlion> changToPersion(@Query("access_token") String access_token,
+                                               @Query("s") String s,
+                                               @Query("clientId") String clientId,
+                                               @Query("sourceId") int sourceId);
+
+
+
+    /**
+     * 7.机器人基本信息
+     */
+    @Headers("Cache-Control:public,max-age=43200")
+    @POST("servlet/ApiChat")
+    Observable<Robot_Information> getRobotInformation(@Query("access_token") String access_token,
+                                                      @Query("s") String s,
+                                                      @Query("clientId") String clientId,
+                                                      @Query("sourceId") int sourceId);
+
+    /**
+     * 8.版本更新
+     */
+    @Headers("Cache-Control:public,max-age=43200")
+    @POST("CheckVersion/latestVersion")
+    Observable<AppVersion> getAppVersion(@Query("type") int type);

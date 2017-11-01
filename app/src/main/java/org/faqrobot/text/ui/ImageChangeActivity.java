@@ -81,9 +81,7 @@ public class ImageChangeActivity extends AppCompatActivity {
     private class TestNormalAdapter extends StaticPagerAdapter {
         //放图片的数组——可以写成biemap的数组
         private int[] imgs = {
-                R.drawable.image_change_one,
-                R.drawable.image_change_two,
-                R.drawable.image_change_three,
+
         };
 
         @Override

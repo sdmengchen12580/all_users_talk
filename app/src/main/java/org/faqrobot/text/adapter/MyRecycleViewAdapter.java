@@ -41,11 +41,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MyRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context mContent;
+    public Context mContent;
     public List<GetRobatResult> mList=new ArrayList<>();
 
     public MyRecycleViewAdapter(Context context, List<GetRobatResult> titls) {
-        this.mContent = context.getApplicationContext();
+        this.mContent = context;
         this.mList = titls;
     }
 

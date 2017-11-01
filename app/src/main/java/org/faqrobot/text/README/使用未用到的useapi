@@ -1,0 +1,142 @@
+  /*
+      * 请求转人工服务请求封装
+      */
+    private void setChangToPersion() {
+
+        tranPersionRetrofit = Http_Retroif.getInstance()
+                .geterver()
+                .changToPersion(ACCESS_TOKEN, Constant.ROBAT_TOPERSION, Constant.CLIENDID, Constant.SOURCEID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<KeeyRobatOnlion>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(KeeyRobatOnlion keeyRobatOnlion) {
+                    }
+                });
+    }
+
+    /*
+      * 设置机器人下线请求封装
+      */
+
+    public void setRobotLeaving() {
+        robotLeavingRetrofit = Http_Retroif.getInstance()
+                .geterver()
+                .getRobotLeaving(ACCESS_TOKEN, Constant.ROBAT_ONLIONING, Constant.CLIENDID, Constant.SOURCEID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<KeeyRobatOnlion>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                    @Override
+                    public void onNext(KeeyRobatOnlion keeyRobatOnlion) {
+                    }
+                });
+    }
+    /*
+      * 获取APP版本号并且校验
+      */
+
+    public void getServerVersion() {
+        robotLeavingRetrofit = Http_Retroif.getInstance()
+                .geterver()
+                .getAppVersion(2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<AppVersion>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(AppVersion appVersion) {
+                        if (null != appVersion & 0 == appVersion.getDel()) {
+                            PackageManager packageManager = getApplicationContext().getPackageManager();
+                            try {
+                                PackageInfo packageInfo = packageManager.getPackageInfo(getApplicationContext().getPackageName(), 0);
+                                int versionCode = packageInfo.versionCode;
+                                if (versionCode < appVersion.getVersionNumber())
+                                    setUpdate(getApplicationContext(), appVersion);
+                            } catch (PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    private void setUpdate(Context mContext, final AppVersion appVersion) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setIcon(R.drawable.company_icon);
+        builder.setTitle("新版本");
+        builder.setMessage("点击确定按钮下载最新版本");
+        builder.setCancelable(true);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MyDownLoadManager myDownLoadManager = new MyDownLoadManager(getApplicationContext(), appVersion);
+                myDownLoadManager.download();
+                dialog.dismiss();
+                finish();
+            }
+        });
+        mUpdateDialog = builder.show();
+    }
+
+    /*
+      * 获取机器人基本信息的封装
+      */
+
+    public void getRobatInformation(String token) {
+        //结果数据
+        mRobatInformation = Http_Retroif.getInstance()
+                .geterver()
+                .getRobotInformation(token, Constant.ROBAT_INFORMATION, Constant.CLIENDID, Constant.SOURCEID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Robot_Information>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Robot_Information robot_information) {
+                        //结果数据
+                        mRobot_information = robot_information;
+                    }
+                });
+    }

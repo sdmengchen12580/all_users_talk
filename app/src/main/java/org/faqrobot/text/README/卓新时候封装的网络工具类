@@ -1,0 +1,65 @@
+public class Base_Face_Retrofit {
+    private static Context mcontext;
+    private OkHttpClient okHttpClient;
+
+
+    /**api接口*/
+    Faceapi faceapi;
+    /**对应的reteofit*/
+    private Retrofit retrofit_uppeople_to_face;
+    /**对应的reteofit*/
+    private Retrofit check_two_facetoken;
+
+    /**********************************************单例start*******************************************/
+    private static Base_Face_Retrofit base_retrofit;
+
+    public static Base_Face_Retrofit get_face_retrofit(Context context){
+        mcontext = context;
+        if (base_retrofit==null){
+            base_retrofit = new Base_Face_Retrofit();
+        }
+        return base_retrofit;
+    }
+
+    private Base_Face_Retrofit(){
+        /**拦截器*/
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        /**共用一个okhttp*/
+        okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+
+        /**retrofit_uppeople_to_face++*/
+        retrofit_uppeople_to_face=new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl("https://api-cn.faceplusplus.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        /**check_two_facetoken*/
+        check_two_facetoken=new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl("https://api-cn.faceplusplus.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+
+    /**对外暴露接口类的对象*/
+    public Faceapi get_people_facetoken(){
+        if (faceapi==null){
+            faceapi = retrofit_uppeople_to_face.create(Faceapi.class);
+        }
+        return faceapi;
+    }
+
+    /**对外暴露接口类的对象*/
+    public Faceapi get_check_two_facetokne(){
+        if (faceapi==null){
+            faceapi = check_two_facetoken.create(Faceapi.class);
+        }
+        return faceapi;
+    }
+}

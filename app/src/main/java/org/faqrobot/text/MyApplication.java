@@ -74,6 +74,6 @@ public class MyApplication extends Application {
         /**检测内存泄露*/
         LeakCanary.install(this);
         /**检测网络*/
-        checkNetClass= CheckNetClass.getInstanc(this);
+        checkNetClass= CheckNetClass.getInstanc(mContext);
     }
 }

@@ -7,13 +7,35 @@ import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.unisound.client.SpeechConstants;
+import com.unisound.client.SpeechUnderstander;
+import com.unisound.client.SpeechUnderstanderListener;
+
 import org.faqrobot.text.R;
+import org.faqrobot.text.constant.Config;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.faqrobot.text.utils.Util_Log_Toast.log_e;
 
 public class NewImageChangeActivity extends AppCompatActivity {
 
-
+    /**************************************对象*************************************************
+     * todo 1.图片滑动的时候会多滑动一张   2.图片用setimagerecouce或者bitmap会有问题
+     * 1.控件
+     * 2.手势监听
+     * 3.图片资源
+     * 问题：图片用setimagerecouce或者bitmap会有问题
+     * 解决网址：http://www.cnblogs.com/wanqieddy/archive/2011/11/25/2263381.
+     * 4.图片的集合
+     * 5.语音唤醒对象
+     * 6.存储屏幕的宽高对象
+     * 7.语音唤醒的关键词集合
+     * */
     private ViewFlipper mViewFlipper;
     private GestureDetector gestureDetector;
     private CustomGestureDetector customGestureDetector;
@@ -21,17 +43,81 @@ public class NewImageChangeActivity extends AppCompatActivity {
             R.drawable.imgone,
             R.drawable.imgtwo,
             R.drawable.imgthree,
-//            R.drawable.image_change_one,
-//            R.drawable.image_change_two,
-//            R.drawable.image_change_three
     };
-
     private ImageView[] imageView = new ImageView[3];
+    private SpeechUnderstander mUnderstander;
+    int screenWidth;
+    int screenHeigh;
+    List<String> list_wakeup_words;
 
+
+
+    /**************************************oncreat******************************************/
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_image_change);
+        initView();
+        initGesture();
+        initWakeUp();
+    }
+
+    /**初始化语音唤醒*/
+    private void initWakeUp()
+    {
+        mUnderstander = new SpeechUnderstander(NewImageChangeActivity.this, Config.appKey, null);
+        mUnderstander.setOption(SpeechConstants.ASR_SERVICE_MODE, SpeechConstants.ASR_SERVICE_MODE_LOCAL);
+        mUnderstander.setOnlineWakeupWord(list_wakeup_words);
+        mUnderstander.setListener(new SpeechUnderstanderListener() {
+            @Override
+            public void onEvent(int i, int i1) {
+                switch (i) {
+                    case SpeechConstants.WAKEUP_EVENT_RECOGNITION_SUCCESS:
+                        toastMessage("唤醒成功");
+                        break;
+                    case SpeechConstants.ASR_EVENT_RECORDING_START:
+                        log_e("语音唤醒已开始");
+                        break;
+                    case SpeechConstants.ASR_EVENT_RECORDING_STOP:
+                        log_e("语音唤醒已停止");
+                        break;
+                    case SpeechConstants.ASR_EVENT_ENGINE_INIT_DONE:
+                        toastMessage("引擎初始化完成，即将开始人脸唤醒");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            @Override
+            public void onError(int i, String s) {
+                toastMessage("语音唤醒服务异常  异常信息：" + s);
+            }
+            @Override
+            public void onResult(int i, String s) {
+            }
+        });
+        mUnderstander.init("");
+    }
+
+    /**吐司的工具类*/
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**初始化手势监听*/
+    private void initGesture()
+    {
+        /**获取屏幕的宽高*/
+        attain_screen_width_or_height();
+        /**初始化手势监听*/
+        customGestureDetector = new CustomGestureDetector();
+        gestureDetector = new GestureDetector(this, customGestureDetector);
+    }
+
+    /**初始化控件*/
+    private void initView()
+    {
         mViewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
         for (int i = 0; i < resources.length; i++) {
             imageView[i]= new ImageView(this);
@@ -40,17 +126,16 @@ public class NewImageChangeActivity extends AppCompatActivity {
             mViewFlipper.addView(imageView[i]);
         }
         /**5s自动切换*/
-        // TODO: 2017/10/30 多滑动一张 
 //        mViewFlipper.setAutoStart(true);
         mViewFlipper.setFlipInterval(5000);
-        /**获取屏幕的宽高*/
-        attain_screen_width_or_height();
-        /**初始化手势监听*/
-        customGestureDetector = new CustomGestureDetector();
-        gestureDetector = new GestureDetector(this, customGestureDetector);
+        /**设置关键词*/
+        list_wakeup_words = new ArrayList<>();
+        list_wakeup_words.add("你好");
     }
 
-    class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener {
+    /**手势监听*/
+    class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener
+    {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float minMove = 120; // 最小滑动距离
@@ -87,27 +172,27 @@ public class NewImageChangeActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 获取屏幕的宽高
-     */
-    int screenWidth;
-    int screenHeigh;
-
-    public void attain_screen_width_or_height() {
+    /**获取屏幕宽高*/
+    public void attain_screen_width_or_height()
+    {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         screenWidth = dm.widthPixels;
         screenHeigh = dm.heightPixels;
     }
 
+    /**将手势监听传给onTouchEvent*/
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event)
+    {
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
+    /**销毁对象*/
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         imageView = null;
         resources = null;

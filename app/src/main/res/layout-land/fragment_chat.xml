@@ -6,16 +6,16 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@android:color/transparent"
-        android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/volume"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#202121"
@@ -33,65 +33,35 @@
             android:progressDrawable="@drawable/progressbar_color" />
     </LinearLayout>
 
-    
-     
 
     <!--android:background="@drawable/textbox_background"-->
     <android.support.v7.widget.RecyclerView
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:textColor="#000000">
 
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        >
 
-        <TextView
-            android:text="当前正在播报"
-            android:id="@+id/tv_speak"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textSize="15sp" />
+    <TextView
+        android:id="@+id/tv_speak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="当前正在播报"
+        android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-        <Button
-            android:text="发送"
-            android:id="@+id/bt_mainsend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/stop_recoder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/status_panel"
-            android:layout_toRightOf="@+id/start_recoder"
-            android:text="停止识别" />
 
 
         <Button

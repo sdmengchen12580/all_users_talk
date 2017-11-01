@@ -11,9 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -22,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,7 +46,6 @@ import org.faqrobot.text.ui.mreceiver.MyMusicServer;
 import org.faqrobot.text.ui.webviewactivity.WebActivity;
 import org.faqrobot.text.utils.HtmlParser;
 import org.faqrobot.text.utils.TimeUtil;
-import org.faqrobot.text.utils.Util_Log_Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,6 +200,8 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         }
         mRecognizerText = null;
         mAsrResultBuffer = null;
+        // TODO: 2017/11/1 释放mRecyclerView？
+        mRecyclerView = null;
         ((TabActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
         Log.e("onStop: ", "东西释放完全了");
     }
@@ -218,10 +216,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     public View view;
     public List<GetRobatResult> data = new ArrayList<>();
     public TextView txview_status;
-    private EditText et_client_sysout_in;
-    private Button bt_send_content;
     public ProgressBar mVolume;
-    private Button stopRecoder;
     private Button stopSpeck;
 
     //用户说的话
@@ -248,7 +243,6 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
             switch (msg.what) {
                 /**清空edittext*/
                 case Config.NUMNER_ONE:
-                    et_client_sysout_in.setText("");
                     break;
                 /**聆听*/
                 case Config.NUMNER_TWO:
@@ -354,6 +348,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                         initTts.setCurrent_number(15);
                     } else if (statue == Config.NUMNER_FIVE) {
                         /**死亡状态时候，不做操作*/
+                        // TODO: 2017/11/1  专门留给第三个fragment播报用的
                     }
                 }
 
@@ -408,51 +403,13 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         //初始化监听事件
         initRecycleViewListener();
         /**非recyclerview相关*/
-        stopRecoder = (Button) view.findViewById(R.id.stop_recoder);
         stopSpeck = (Button) view.findViewById(R.id.stop_speck);
 
         mVolume = (ProgressBar) view.findViewById(R.id.volume_progressbar);
         txview_status = (TextView) view.findViewById(R.id.tv_speak);
-        et_client_sysout_in = (EditText) view.findViewById(R.id.et_content);
-        bt_send_content = (Button) view.findViewById(R.id.bt_mainsend);
-        stopRecoder.setOnClickListener(this);
+
         stopSpeck.setOnClickListener(this);
-        bt_send_content.setOnClickListener(this);
         txview_status.setOnClickListener(this);
-        et_client_sysout_in.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                /**重新计时*/
-                initTts.setCurrent_number(15);
-                if (statue == Config.NUMNER_ONE) {
-                    return true;
-                } else if (statue == Config.NUMNER_FOUR) {
-                    Util_Log_Toast.log_e(getContext(), "当前正在播报，即将停止播报");
-                    mTTSPlayer.stop();
-                } else if (statue == Config.NUMNER_TWO || statue == Config.NUMNER_THREE) {
-                    Util_Log_Toast.log_e(getContext(), "当前正在识别，即将停止播报");
-                    mUnderstander.cancel();
-                }
-                /**点击键盘设置为死亡状态*/
-                statue = Config.NUMNER_FIVE;
-                handler.sendEmptyMessage(Config.NUMNER_FOUR);
-                return false;
-            }
-            return false;
-        });
-        et_client_sysout_in.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                initTts.setCurrent_number(15);
-            }
-        });
         mAsrResultBuffer = new StringBuffer();
     }
 
@@ -472,44 +429,12 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     handler.sendEmptyMessage(Config.NUMNER_ONE);
                 }
                 break;
-            case R.id.bt_mainsend:
-                // TODO: 2017/10/30 点击edittext该怎么做 
-                /**edittext为空时候，点击没用*/
-                if (et_client_sysout_in.getText().toString().isEmpty()) {
-                    return;
-                }
-                /**不为空直接播报，此时肯定为死亡状态*/
-                if (!et_client_sysout_in.getText().toString().isEmpty()) {
-                    // TODO: 2017/10/31  当前肯定为死亡状态，是否需要停止播报和聆听等。
-                    if (statue == Config.NUMNER_TWO || statue == Config.NUMNER_THREE) {
-                        mUnderstander.cancel();
-                        mVolume.setProgress(0);
-                    }
-                    /**edittext不为空，状态改为播报*/
-                    if (!TextUtils.isEmpty(et_client_sysout_in.getText().toString().trim())) {
-                        statue = Config.NUMNER_FOUR;
-                        handler.sendEmptyMessage(Config.NUMNER_THREE);
-                        showTxtRight(et_client_sysout_in.getText().toString().trim());
-                        getRobatQstion(et_client_sysout_in.getText().toString().trim());
-                        handler.sendEmptyMessage(Config.NUMNER_ONE);
-                    }
-                }
-                break;
             /**当前正在播报，停止播报*/
             case R.id.stop_speck:
                 if (statue == Config.NUMNER_FOUR) {
                     mTTSPlayer.stop();
                     mTTSPlayer.init("");
                     statue = Config.NUMNER_ONE;
-                }
-                break;
-            case R.id.stop_recoder:
-                if (statue == Config.NUMNER_TWO) {
-                    mUnderstander.cancel();
-                    mVolume.setProgress(0);
-                    /**点击键盘设置为死亡状态*/
-                    statue = Config.NUMNER_FIVE;
-                    handler.sendEmptyMessage(Config.NUMNER_FOUR);
                 }
                 break;
         }

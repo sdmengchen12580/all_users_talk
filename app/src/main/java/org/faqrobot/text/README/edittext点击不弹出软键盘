@@ -1,0 +1,6 @@
+EditText edittext= (EditText) this.findViewById(R.id.edittext);
+            int inType = edittext.getInputType();
+            edittext.setInputType(InputType.TYPE_NULL);
+            edittext.onTouchEvent(event);
+            edittext.setInputType(inType);
+            edittext.setSelection(edittext.getText().length());
