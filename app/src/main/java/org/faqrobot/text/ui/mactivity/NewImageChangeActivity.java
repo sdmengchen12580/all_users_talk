@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui;
+package org.faqrobot.text.ui.mactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +20,10 @@ import org.faqrobot.text.constant.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.faqrobot.text.utils.Util_Log_Toast.log_e;
-
 public class NewImageChangeActivity extends AppCompatActivity {
 
     /**************************************对象*************************************************
-     * todo 1.图片滑动的时候会多滑动一张   2.图片用setimagerecouce或者bitmap会有问题
+     * todo 1.图片滑动的时候会多滑动一张   2.图片用setimagerecouce或者bitmap会有问题 3.唤醒加了没用
      * 1.控件
      * 2.手势监听
      * 3.图片资源
@@ -49,7 +47,7 @@ public class NewImageChangeActivity extends AppCompatActivity {
     int screenWidth;
     int screenHeigh;
     List<String> list_wakeup_words;
-
+    private static final String WAKEUP_TAG = "wakeup";
 
 
     /**************************************oncreat******************************************/
@@ -60,44 +58,49 @@ public class NewImageChangeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_image_change);
         initView();
         initGesture();
-        initWakeUp();
+//        initWakeUp();
     }
 
     /**初始化语音唤醒*/
     private void initWakeUp()
     {
-        mUnderstander = new SpeechUnderstander(NewImageChangeActivity.this, Config.appKey, null);
+        mUnderstander = new SpeechUnderstander(this, Config.appKey, null);
         mUnderstander.setOption(SpeechConstants.ASR_SERVICE_MODE, SpeechConstants.ASR_SERVICE_MODE_LOCAL);
-        mUnderstander.setOnlineWakeupWord(list_wakeup_words);
         mUnderstander.setListener(new SpeechUnderstanderListener() {
             @Override
-            public void onEvent(int i, int i1) {
-                switch (i) {
+            public void onResult(int type, String jsonResult) {
+//                toastMessage("(唤醒成功)");
+            }
+            @Override
+            public void onEvent(int type, int timeMs) {
+                switch (type) {
                     case SpeechConstants.WAKEUP_EVENT_RECOGNITION_SUCCESS:
-                        toastMessage("唤醒成功");
+                        toastMessage("(唤醒成功)");
+                        startActivity(new Intent(NewImageChangeActivity.this,TabActivity.class));
+                        finish();
                         break;
                     case SpeechConstants.ASR_EVENT_RECORDING_START:
-                        log_e("语音唤醒已开始");
+                        toastMessage("语音唤醒已开始");
                         break;
                     case SpeechConstants.ASR_EVENT_RECORDING_STOP:
-                        log_e("语音唤醒已停止");
+                        toastMessage("语音唤醒录音已停止");
                         break;
                     case SpeechConstants.ASR_EVENT_ENGINE_INIT_DONE:
-                        toastMessage("引擎初始化完成，即将开始人脸唤醒");
+                        toastMessage("引擎初始化完成");
                         break;
                     default:
                         break;
                 }
             }
             @Override
-            public void onError(int i, String s) {
-                toastMessage("语音唤醒服务异常  异常信息：" + s);
-            }
-            @Override
-            public void onResult(int i, String s) {
+            public void onError(int type, String errorMSG) {
+                toastMessage("errorMSG对应的值 = "+type);
+                toastMessage("errorMSG = "+errorMSG);
+                toastMessage("语音唤醒服务异常  异常信息：" + errorMSG);
             }
         });
         mUnderstander.init("");
+        mUnderstander.start(WAKEUP_TAG);
     }
 
     /**吐司的工具类*/
@@ -199,5 +202,8 @@ public class NewImageChangeActivity extends AppCompatActivity {
         mViewFlipper = null;
         customGestureDetector = null;
         gestureDetector= null;
+//        mUnderstander.cancel();
+//        mUnderstander.release(SpeechConstants.ASR_RELEASE_ENGINE, "");
+//        mUnderstander = null;
     }
 }

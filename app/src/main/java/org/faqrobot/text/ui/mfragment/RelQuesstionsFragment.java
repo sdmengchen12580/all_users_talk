@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui.tabfragment;
+package org.faqrobot.text.ui.mfragment;
 
 
 import android.os.Bundle;
@@ -11,14 +11,15 @@ import android.widget.ListView;
 
 import org.faqrobot.text.R;
 import org.faqrobot.text.adapter.MyBaseAdapter;
-import org.faqrobot.text.ui.TabActivity;
+import org.faqrobot.text.constant.Config;
+import org.faqrobot.text.ui.mactivity.TabActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // TODO: 2017/10/30 listview中子控件的点击事件 
 // TODO: 2017/10/30 http://blog.csdn.net/zcf520android/article/details/51471018
-public class RelQuesstionsFragment extends Fragment implements MyBaseAdapter.OnclickListener{
+public class RelQuesstionsFragment extends Fragment implements MyBaseAdapter.OnclickListener {
 
 
     public RelQuesstionsFragment() {
@@ -31,7 +32,7 @@ public class RelQuesstionsFragment extends Fragment implements MyBaseAdapter.Onc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_rel_quesstions, container, false);
+        View view = inflater.inflate(R.layout.fragment_rel_quesstions, container, false);
         initView(view);
         return view;
     }
@@ -45,7 +46,7 @@ public class RelQuesstionsFragment extends Fragment implements MyBaseAdapter.Onc
         list_rel_content.add("上一轮融到了多少资金？");
         list_rel_content.add("出差报销有规定的时间限制吗？");
         list_rel_content.add("日常给用如何报销？");
-        myadapter = new MyBaseAdapter(getActivity(),list_rel_content);
+        myadapter = new MyBaseAdapter(getActivity(), list_rel_content);
         listView_rel_content.setAdapter(myadapter);
         /**fragment实现接口，并传入适配器中*/
         myadapter.set_click_listener(this);
@@ -57,23 +58,27 @@ public class RelQuesstionsFragment extends Fragment implements MyBaseAdapter.Onc
      * 返回聊天界面-并播报
      */
     String string;
+
     @Override
     public void show_content(MyBaseAdapter adapter, View view, int position) {
         string = list_rel_content.get(position);
-        Log.e("show_content: ","拿到的内容为"+ string);
+        Log.e("show_content: ", "拿到的内容为" + string);
         // TODO: 2017/10/30 跳转时候该怎么做
-        ((TabActivity)getActivity()).viewPager.setCurrentItem(1,true);
-        ((TabActivity)getActivity()).chatFragment.showTxtRight(string);
-        ((TabActivity)getActivity()).chatFragment.speck_rel_quesstions(string);
+        ((TabActivity) getActivity()).viewPager.setCurrentItem(1, true);
+        ((TabActivity) getActivity()).chatFragment.statue = Config.NUMNER_FOUR;
+        ((TabActivity) getActivity()).chatFragment.showTxtRight(string);
+        ((TabActivity) getActivity()).chatFragment.speck_rel_quesstions(string);
     }
 
     @Override
     public void show_loge(MyBaseAdapter adapter, View view, int position) {
-        Log.e("relquesstions中点击的数字为：",position+"" );
+        Log.e("relquesstions中点击的数字为：", position + "");
     }
 
 
-    /**释放资源*/
+    /**
+     * 释放资源
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

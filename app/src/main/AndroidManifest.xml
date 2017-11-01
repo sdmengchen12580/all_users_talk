@@ -40,18 +40,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.ImageChangeActivity"
+            android:name=".ui.mactivity.ImageChangeActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ui.TabActivity"
+            android:name=".ui.mactivity.TabActivity"
             android:screenOrientation="landscape" />
         <activity
             android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"
-            android:name=".ui.UpPersonInfoActivity"
+            android:name=".ui.mactivity.UpPersonInfoActivity"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".ui.NewImageChangeActivity"
+            android:name=".ui.mactivity.NewImageChangeActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,7 +59,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".ui.mreceiver.MyMusicServer"
+            android:name=".ui.rece_broad.MyMusicServer"
             android:enabled="true" />
 
     </application>

@@ -1,4 +1,4 @@
-package org.faqrobot.text.net_api;
+package org.faqrobot.text.netapi;
 
 
 import org.faqrobot.text.entity.Access_Token;

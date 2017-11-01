@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui.tabfragment;
+package org.faqrobot.text.ui.mfragment;
 
 
 import android.content.BroadcastReceiver;
@@ -24,10 +24,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.unisound.client.SpeechSynthesizer;
 import com.unisound.client.SpeechUnderstander;
-
 import org.faqrobot.text.MyApplication;
 import org.faqrobot.text.R;
 import org.faqrobot.text.adapter.MyRecycleViewAdapter;
@@ -38,18 +36,16 @@ import org.faqrobot.text.entity.GetRobatResult;
 import org.faqrobot.text.entity.GusList;
 import org.faqrobot.text.entity.MyQuestion;
 import org.faqrobot.text.entity.RobotAnswer;
-import org.faqrobot.text.tabactivityhelper.InitTts;
-import org.faqrobot.text.ui.NewImageChangeActivity;
-import org.faqrobot.text.ui.TabActivity;
-import org.faqrobot.text.ui.UpPersonInfoActivity;
-import org.faqrobot.text.ui.mreceiver.MyMusicServer;
+import org.faqrobot.text.initttsandwakeup.InitTts;
+import org.faqrobot.text.ui.mactivity.NewImageChangeActivity;
+import org.faqrobot.text.ui.mactivity.TabActivity;
+import org.faqrobot.text.ui.mactivity.UpPersonInfoActivity;
+import org.faqrobot.text.ui.rece_broad.MyMusicServer;
 import org.faqrobot.text.ui.webviewactivity.WebActivity;
 import org.faqrobot.text.utils.HtmlParser;
 import org.faqrobot.text.utils.TimeUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -153,13 +149,6 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
      * 对第三个fragment提供的播报对应问题的方法
      */
     public void speck_rel_quesstions(String string) {
-        /**当前正在聆听状态，就终止*/
-        if (statue == Config.NUMNER_ONE) {
-            mUnderstander.cancel();
-        }
-        if (statue == Config.NUMNER_FOUR) {
-            mTTSPlayer.stop();
-        }
         /**当前正在播报*/
         statue = Config.NUMNER_FOUR;
         handler.sendEmptyMessage(Config.NUMNER_THREE);
@@ -343,10 +332,12 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     if (statue == Config.NUMNER_FOUR) {
                         statue = Config.NUMNER_ONE;
                         initTts.setCurrent_number(15);
-                    } else if (statue == Config.NUMNER_SIX) {
+                    }
+                    else if (statue == Config.NUMNER_SIX) {
                         statue = Config.NUMNER_ONE;
                         initTts.setCurrent_number(15);
-                    } else if (statue == Config.NUMNER_FIVE) {
+                    }
+                    else if (statue == Config.NUMNER_FIVE) {
                         /**死亡状态时候，不做操作*/
                         // TODO: 2017/11/1  专门留给第三个fragment播报用的
                     }
@@ -452,8 +443,8 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     mAsrResultBuffer.delete(0, mAsrResultBuffer.length());
                     handler.sendEmptyMessage(Config.NUMNER_ONE);
                     /**开始识别*/
-                    mUnderstander.start();
                     mUnderstander.init("");
+                    mUnderstander.start();
                     /**当前正在识别*/
                     statue = Config.NUMNER_TWO;
                     handler.sendEmptyMessage(Config.NUMNER_TWO);
@@ -932,7 +923,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         getRobatResult.setPlaying(true);//设置最后一个播放
         mAdapter.addData(getRobatResult);
         //跳转到最后一行
-        mRecyclerView.smoothScrollToPosition(mAdapter.getTotalCount());
+        mRecyclerView.smoothScrollToPosition(mAdapter.getTotalCount()-2);
     }
 
     /**
@@ -969,7 +960,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
             mTTSPlayer.init("");
         }
         /**初始化语音合成*/
-//        mTTSPlayer.init("");
+        mTTSPlayer.init("");
         mTTSPlayer.playText(question);
         /**当前正在播报*/
         statue = Config.NUMNER_FOUR;

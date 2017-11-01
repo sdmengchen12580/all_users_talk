@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.faqrobot.text.ui.NewImageChangeActivity;
+import org.faqrobot.text.ui.mactivity.NewImageChangeActivity;
 
 
 /**

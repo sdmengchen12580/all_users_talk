@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import org.faqrobot.text.MyApplication;
 import org.faqrobot.text.constant.Config;
-import org.faqrobot.text.net_api.Chat2Server;
+import org.faqrobot.text.netapi.Chat2Server;
 
 import java.io.File;
 import java.io.IOException;

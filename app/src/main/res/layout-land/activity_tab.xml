@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tab_background"
-    tools:context="org.faqrobot.text.ui.TabActivity">
+    tools:context="org.faqrobot.text.ui.mactivity.TabActivity">
 
   <org.faqrobot.text.view.ChildViewPager
       android:id="@+id/viewPager"

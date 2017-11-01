@@ -1,4 +1,4 @@
-package org.faqrobot.text.helper;
+package org.faqrobot.text.initttsandwakeup;
 
 import android.content.Context;
 import android.util.Log;
@@ -25,18 +25,25 @@ import static org.faqrobot.text.MyApplication.getContext;
  */
 
 public class InitTts {
+    /**
+     * 单例
+     */
     private static Context context;
-    private static InitTts initTts=null;
-    public static  synchronized InitTts getInstance(Context context){
-        if (initTts==null){
+    private static InitTts initTts = null;
+
+    public static synchronized InitTts getInstance(Context context) {
+        if (initTts == null) {
             initTts = new InitTts(context);
         }
         return initTts;
     }
 
-    /**不做操作的计时*/
+    /**
+     * 计时
+     */
     private Timer timer_twenty_s;
     private int current_number = 15;
+
     public void setCurrent_number(int current_number) {
         this.current_number = current_number;
     }
@@ -44,7 +51,10 @@ public class InitTts {
     /*** 语音识别——语音合成*/
     public SpeechUnderstander mUnderstander;
     public SpeechSynthesizer mTTSPlayer;
-    /**识别的结果*/
+
+    /**
+     * 识别的结果
+     */
     private StringBuffer mAsrResultBuffer;
 
     /**
@@ -55,62 +65,96 @@ public class InitTts {
     private static String arrayLanguageStr[] = new String[]{SpeechConstants.LANGUAGE_MANDARIN,
             SpeechConstants.LANGUAGE_ENGLISH, SpeechConstants.LANGUAGE_CANTONESE};
 
-
-
-    /**对fragment提供的接口*/
-    public interface Interface_give_fragment_to_use{
-        /**文字显示右边*/
+    /**
+     * 对fragment提供的接口
+     */
+    public interface Interface_give_fragment_to_use {
+        /**
+         * 文字显示右边
+         */
         void inter_showTxtRight(String str);
-        /**问题请求后台网络*/
+
+        /**
+         * 问题请求后台网络
+         */
         void inter_getRobatQstion(String str);
-        /**设置当前状态*/
+
+        /**
+         * 设置当前状态
+         */
         void inter_current_status(int status);
-        /**音量改变*/
+
+        /**
+         * 音量改变
+         */
         void inter_volume_change(int volume);
-        /**删除textview的内容*/
+
+        /**
+         * 删除textview的内容
+         */
         void inter_delect_textview();
-        /**text显示识别的内容*/
+
+        /**
+         * text显示识别的内容
+         */
         void inter_textview_show_recognize_word(String str);
-        /**语音识别结束*/
+
+        /**
+         * 语音识别结束
+         */
         void inter_speck_end();
-        /**初始化合成说hello*/
+
+        /**
+         * 初始化合成说hello
+         */
         void inter_init_speck_to_speck_hello();
     }
 
-    public Interface_give_fragment_to_use minterface_give_fragment_to_use=null;
+    /**
+     * 接口成员变量——对外提供设置和清空接口的方法
+     */
+    public Interface_give_fragment_to_use minterface_give_fragment_to_use = null;
 
-    public void set_interface(Interface_give_fragment_to_use interface_give_fragment_to_use){
-        Log.e("————————set_interface: ","设置了接口" );
-        if(minterface_give_fragment_to_use!=null){
+    public void set_interface(Interface_give_fragment_to_use interface_give_fragment_to_use) {
+        Log.e("————————set_interface: ", "设置了接口");
+        if (minterface_give_fragment_to_use != null) {
             minterface_give_fragment_to_use = null;
             this.minterface_give_fragment_to_use = interface_give_fragment_to_use;
-        }else {
+        } else {
             this.minterface_give_fragment_to_use = interface_give_fragment_to_use;
         }
     }
-    public void release_interface(){
+
+    public void release_interface() {
         minterface_give_fragment_to_use = null;
     }
 
-    private InitTts(Context context){
+
+    /**
+     * 没选择在构造方法中直接初始化语音识别和播报
+     */
+    private InitTts(Context context)
+    {
         this.context = context;
         mAsrResultBuffer = new StringBuffer();
         /**初始化计时器*/
         initTimer();
     }
 
-    public void initTts(){
-        /**初始化语音识别*/
-        Log.e("______________initTts: ","初始化识别" );
+    /**
+     * 初始化语音识别
+     */
+    public void initTts()
+    {
         initRecognizer();
-
-        /**初始化语音合成*/
-        Log.e("______________initTts: ","初始化播报" );
         initSpecker();
     }
 
-    /**初始化计时器*/
-    private void initTimer() {
+    /**
+     * 初始化计时器
+     */
+    private void initTimer()
+    {
         timer_twenty_s = new Timer();
         timer_twenty_s.schedule(new TimerTask() {
             @Override
@@ -129,11 +173,11 @@ public class InitTts {
         }, 0, 1000);
     }
 
-
     /**
      * 初始化语音识别
      */
-    private void initRecognizer() {
+    private void initRecognizer()
+    {
         /**创建语音识别对象，appKey和 secret通过 http://dev.hivoice.cn/ 网站申请*/
         mUnderstander = new SpeechUnderstander(context, Config.appKey, Config.secret);
         /**开启可变结果*/
@@ -144,6 +188,7 @@ public class InitTts {
         /**修改识别语音*/
         mUnderstander.setOption(SpeechConstants.ASR_SAMPLING_RATE, arraySample[1]);
         mUnderstander.setOption(SpeechConstants.ASR_LANGUAGE, arrayLanguageStr[0]);
+
         // TODO: 2017/9/28  保存录音数据——数据保存到哪里？
         // TODO: 2017/9/28   recognizer.setRecordingDataEnable(true);
         mUnderstander.setListener(new SpeechUnderstanderListener() {
@@ -170,20 +215,20 @@ public class InitTts {
                                         /**用户交互了，重新计时*/
                                         current_number = 15;
                                         Util_Log_Toast.log_e(getContext(), "用户说话为：" + result.toString());
-                                            // TODO: 2017/10/26  右边显示用户说的话
-                                            minterface_give_fragment_to_use.inter_showTxtRight(result.toString().trim());
-                                            // TODO: 2017/10/26   请求nlp
-                                            minterface_give_fragment_to_use.inter_getRobatQstion(result.toString().trim());
-                                            // TODO: 2017/10/26  当前正在播报
-                                            minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
+                                        // TODO: 2017/10/26  右边显示用户说的话
+                                        minterface_give_fragment_to_use.inter_showTxtRight(result.toString().trim());
+                                        // TODO: 2017/10/26   请求nlp
+                                        minterface_give_fragment_to_use.inter_getRobatQstion(result.toString().trim());
+                                        // TODO: 2017/10/26  当前正在播报
+                                        minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
                                     } else if (result.length() == 2) {
                                         Util_Log_Toast.log_e(getContext(), "用户说一个字，不识别");
-                                            // TODO: 2017/10/26  当前空闲状态
-                                            minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
+                                        // TODO: 2017/10/26  当前空闲状态
+                                        minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
                                     } else if (result.isEmpty()) {
                                         Util_Log_Toast.log_e(getContext(), "用户没说话");
-                                            // TODO: 2017/10/26  当前空闲状态
-                                            minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
+                                        // TODO: 2017/10/26  当前空闲状态
+                                        minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
                                     }
                                 }
                             } catch (Exception e) {
@@ -198,6 +243,7 @@ public class InitTts {
                         break;
                 }
             }
+
             @Override
             public void onEvent(int type, int timeMs) {
                 switch (type) {
@@ -216,10 +262,10 @@ public class InitTts {
                         // 说话音量实时返回
                         int volume = (Integer) mUnderstander.getOption(SpeechConstants.GENERAL_UPDATE_VOLUME);
                         // TODO: 2017/10/26 音量大于多少的时候，重新计时
-                        if(volume>35){
+                        if (volume > 35) {
                             current_number = 15;
                         }
-                            // TODO: 2017/10/26 音量改变
+                        // TODO: 2017/10/26 音量改变
                         minterface_give_fragment_to_use.inter_volume_change(volume);
                         break;
                     /**4.识别完*/
@@ -241,6 +287,7 @@ public class InitTts {
                         break;
                 }
             }
+
             @Override
             public void onError(int type, String errorMSG) {
                 if (errorMSG != null) {
@@ -255,7 +302,8 @@ public class InitTts {
     /**
      * 语音解析工具方法
      */
-    private void asrResultOperate(String jsonResult) {
+    private void asrResultOperate(String jsonResult)
+    {
         JSONObject asrJson;
         try {
             asrJson = new JSONObject(jsonResult);
@@ -283,11 +331,11 @@ public class InitTts {
         }
     }
 
-
     /**
      * 初始化语音合成
      */
-    public void initSpecker() {
+    public void initSpecker()
+    {
         /**创建语音合成（合成就是播报）对象*/
         mTTSPlayer = new SpeechSynthesizer(context, Config.appKey, Config.secret);
         mTTSPlayer.setOption(SpeechConstants.TTS_SERVICE_MODE, SpeechConstants.TTS_SERVICE_MODE_NET);
@@ -316,7 +364,7 @@ public class InitTts {
                         break;
                     case SpeechConstants.TTS_EVENT_PLAYING_END:
                         Log.e("—————语音识别播报的类———————", "播报完成");
-                        if(minterface_give_fragment_to_use!=null){
+                        if (minterface_give_fragment_to_use != null) {
                             minterface_give_fragment_to_use.inter_speck_end();
                         }
                         // 播放完成回调
@@ -347,15 +395,18 @@ public class InitTts {
         mTTSPlayer.init("");
         /**首次播报*/
         mTTSPlayer.playText("您好客官，请问有什么可以帮您的吗？");
-            minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
+        minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
     }
 
-    public void release_value(){
+    /**
+     * 释放资源
+     */
+    public void release_value() {
         /**计时未结束时候切屏——计时结束后直接释放*/
-        if(current_number!=0){
+        if (current_number != 0) {
             timer_twenty_s.cancel();
             timer_twenty_s = null;
-        }else {
+        } else {
             timer_twenty_s = null;
         }
         if (mUnderstander != null) {
@@ -371,5 +422,4 @@ public class InitTts {
         initTts = null;
         context = null;
     }
-
 }

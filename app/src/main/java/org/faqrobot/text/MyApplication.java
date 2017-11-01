@@ -1,11 +1,10 @@
 package org.faqrobot.text;
 
+
 import android.app.Application;
 import android.content.Context;
-
 import com.squareup.leakcanary.LeakCanary;
-
-import org.faqrobot.text.tabactivityhelper.CheckNetClass;
+import org.faqrobot.text.initttsandwakeup.CheckNetClass;
 
 /**
  * Created by 孟晨 on 2017/10/26.

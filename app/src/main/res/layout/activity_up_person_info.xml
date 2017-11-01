@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/tab_background"
     android:orientation="vertical"
-    tools:context="org.faqrobot.text.ui.UpPersonInfoActivity">
+    tools:context="org.faqrobot.text.ui.mactivity.UpPersonInfoActivity">
 
 
     <LinearLayout

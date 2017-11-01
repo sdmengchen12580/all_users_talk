@@ -1,4 +1,4 @@
-package org.faqrobot.text.helper;
+package org.faqrobot.text.initttsandwakeup;
 
 import android.content.Context;
 import android.util.Log;

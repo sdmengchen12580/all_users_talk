@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui.tabfragment;
+package org.faqrobot.text.ui.mfragment;
 
 
 import android.os.Bundle;

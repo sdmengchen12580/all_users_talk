@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui;
+package org.faqrobot.text.ui.mactivity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,7 +65,8 @@ public class ImageChangeActivity extends AppCompatActivity {
     /**
      * viewpager的设置
      */
-    private void set_viewpager() {
+    private void set_viewpager()
+    {
         //设置播放时间间隔
         mRollViewPager.setPlayDelay(3000);
         //设置透明度
@@ -78,7 +79,8 @@ public class ImageChangeActivity extends AppCompatActivity {
         mRollViewPager.setHintView(new ColorPointHintView(this, Color.YELLOW, Color.WHITE));
     }
 
-    private class TestNormalAdapter extends StaticPagerAdapter {
+    private class TestNormalAdapter extends StaticPagerAdapter
+    {
         //放图片的数组——可以写成biemap的数组
         private int[] imgs = {
 
@@ -100,7 +102,8 @@ public class ImageChangeActivity extends AppCompatActivity {
     }
 
 
-    private void hideBottomNagative() {
+    private void hideBottomNagative()
+    {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -111,7 +114,8 @@ public class ImageChangeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         unbinder.unbind();
     }
@@ -121,7 +125,8 @@ public class ImageChangeActivity extends AppCompatActivity {
      */
     int screenWidth;
     int screenHeigh;
-    public void attain_screen_width_or_height() {
+    public void attain_screen_width_or_height()
+    {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         screenWidth = dm.widthPixels;
@@ -131,7 +136,8 @@ public class ImageChangeActivity extends AppCompatActivity {
     /**
      * 初始化手势
      */
-    private void initGesture() {
+    private void initGesture()
+    {
         //实例化SimpleOnGestureListener与GestureDetector对象
         mgListener = new MyGestureListener();
         mDetector = new GestureDetector(this, mgListener);
@@ -143,7 +149,8 @@ public class ImageChangeActivity extends AppCompatActivity {
      */
     // TODO: 2017/10/26 滑动冲突
     // TODO: 2017/10/26 滑动冲突
-    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener
+    {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float v, float v1) {
             if (e1.getY() > screenHeigh * 4 / 5 && e1.getY() - e2.getY() > MIN_MOVE) {
@@ -163,7 +170,8 @@ public class ImageChangeActivity extends AppCompatActivity {
     private MyGestureListener mgListener;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event)
+    {
         return mDetector.onTouchEvent(event);
     }
 

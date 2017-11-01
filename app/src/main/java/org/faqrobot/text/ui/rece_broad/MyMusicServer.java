@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui.mreceiver;
+package org.faqrobot.text.ui.rece_broad;
 
 import android.app.Notification;
 import android.app.Service;

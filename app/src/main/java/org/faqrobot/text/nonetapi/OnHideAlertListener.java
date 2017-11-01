@@ -1,4 +1,4 @@
-package org.faqrobot.text.methods_api;
+package org.faqrobot.text.nonetapi;
 
 /**
  * Created by yunwen on 2017/10/9.

@@ -1,4 +1,4 @@
-package org.faqrobot.text.ui;
+package org.faqrobot.text.ui.mactivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

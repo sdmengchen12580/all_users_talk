@@ -53,7 +53,6 @@ dependencies {
     compile "io.reactivex:rxandroid:$rxjava_version"
     //interceptor
     compile "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
-    compile files('libs/usc.jar')
     compile 'com.jude:rollviewpager:1.2.9'
     /**circleimageview*/
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -72,4 +71,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     /**百分比*/
     compile 'com.zhy:percent-support-extends:1.1.1'
+    compile files('libs/usc.jar')
 }

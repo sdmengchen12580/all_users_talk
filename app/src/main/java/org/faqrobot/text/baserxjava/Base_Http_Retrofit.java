@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import org.faqrobot.text.MyApplication;
 import org.faqrobot.text.constant.Config;
-import org.faqrobot.text.net_api.Rxjava_Api;
+import org.faqrobot.text.netapi.Rxjava_Api;
 
 import java.io.File;
 import java.io.IOException;
