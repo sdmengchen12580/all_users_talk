@@ -10,14 +10,12 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
 import org.faqrobot.text.R;
 import org.faqrobot.text.constant.Config;
 import org.faqrobot.text.ui.mfragment.ChatFragment;
 import org.faqrobot.text.ui.mfragment.MessageFragment;
 import org.faqrobot.text.ui.mfragment.RelQuesstionsFragment;
 import org.faqrobot.text.view.ChildViewPager;
-
 import java.util.ArrayList;
 
 public class TabActivity extends AppCompatActivity {
@@ -29,7 +27,7 @@ public class TabActivity extends AppCompatActivity {
      * 3.屏幕的寬高
      * 4.手勢監聽的對象
      */
-    private ChildViewPager viewPager;
+    public ChildViewPager viewPager;
     public static ChatFragment chatFragment;
     public static MessageFragment messageFragment;
     public static RelQuesstionsFragment relQuesstionsFragment;

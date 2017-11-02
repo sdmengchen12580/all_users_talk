@@ -68,16 +68,47 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         MyRecycleViewAdapter.OnRecycleViewVideoClickListenter,
         View.OnLayoutChangeListener, View.OnClickListener {
 
-    /*****************************************接口回调start**********************************************************/
+    // TODO: 2017/11/2
+    /**无用，有待删除*/
     public ChatFragment() {
     }
-    /*****************************************手势监听重新计时start**********************************************************/
-    /**
-     * 获取屏幕的宽高
+    @Override
+    public void sendText() {
+
+    }
+
+    @Override
+    public void beginListener() {
+
+    }
+
+    @Override
+    public void stopListener() {
+
+    }
+
+    @Override
+    public void textChang() {
+
+    }
+
+    @Override
+    public void isFocus() {
+
+    }
+    /********************************************手势监听*************************************************
+     * 1.屏幕的宽高
+     * 2.手勢監聽的對象
      */
     int screenWidth;
     int screenHeigh;
+    private TabActivity.MyOnTouchListener onTouchListener;
+    private GestureDetector mDetector;
+    private CustomGestureDetector customGestureDetector;
 
+    /**
+     * 獲取屏幕的寬高
+     */
     public void attain_screen_width_or_height() {
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -86,7 +117,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     }
 
     /**
-     * fragment中的手势监听
+     * fragment中的手势监听，切換頁面
      */
     class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener {
         @Override
@@ -128,42 +159,48 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         }
     }
 
-    private TabActivity.MyOnTouchListener onTouchListener;
-    private GestureDetector mDetector;
-    private CustomGestureDetector customGestureDetector;
 
+    /**
+     * 傳入手勢監聽
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         customGestureDetector = new CustomGestureDetector();
         mDetector = new GestureDetector(getActivity(), customGestureDetector);
-        onTouchListener = new TabActivity.MyOnTouchListener() {
-            @Override
-            public boolean onTouch(MotionEvent ev) {
-                mDetector.onTouchEvent(ev);
-                return false;
-            }
+        onTouchListener = ev -> {
+            mDetector.onTouchEvent(ev);
+            return false;
         };
         /**注册手势监听*/
         ((TabActivity) getActivity()).registerMyOnTouchListener(onTouchListener);
     }
 
 
-    /**
+    /*********************************************第三个界面传来播报的问题***************************************************
      * 对第三个fragment提供的播报对应问题的方法
      */
     public void speck_rel_quesstions(String string) {
         /**当前正在播报*/
-        statue = Config.NUMNER_FOUR;
         handler.sendEmptyMessage(Config.NUMNER_THREE);
         /**请求后台*/
         getRobatQstion(string);
     }
 
+
+
+    /************************************************ 释放资源***************************************************************
+     * 1.关闭2线程，停止播報和监听
+     * 2.停止播报和聆听
+     * 3.状态改为播报
+     * 4.注销接口
+     * 5.data清空
+     * 6.注销播报识别对象
+     * 7.注销手势监听
+     */
     @Override
     public void onStop() {
         super.onStop();
-        /**关闭线程*/
         checking_is_idel = false;
         if (check_status_is_idel != null) {
             check_status_is_idel.interrupt();
@@ -174,13 +211,11 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
             check_status_is_speck.interrupt();
             check_status_is_speck = null;
         }
-        /**停止播报和聆听*/
         if (statue == Config.NUMNER_FOUR) {
             mTTSPlayer.stop();
         } else if (statue == Config.NUMNER_ONE || statue == Config.NUMNER_TWO || statue == Config.NUMNER_THREE) {
             mUnderstander.cancel();
         }
-        /**第6种状态，回来可以接口播报转聆听*/
         statue = Config.NUMNER_FOUR;
         /**监听置空*/
         initTts.release_interface();
@@ -193,7 +228,6 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         }
         mRecognizerText = null;
         mAsrResultBuffer = null;
-        // TODO: 2017/11/1 释放mRecyclerView？
         mRecyclerView = null;
         ((TabActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
         Log.e("onStop: ", "东西释放完全了");
@@ -204,54 +238,46 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     public SpeechUnderstander mUnderstander;
     public SpeechSynthesizer mTTSPlayer;
     RecyclerView mRecyclerView;
-    public static int currentMusic;
     public MyRecycleViewAdapter mAdapter;
-    public View view;
+    public static int currentMusic;
     public List<GetRobatResult> data = new ArrayList<>();
-    public TextView txview_status;
-    public ProgressBar mVolume;
-    private Button stopSpeck;
+    public TextView txview_status;  //显示当前是否聆听播报
+    public ProgressBar mVolume;   //音量
+    private Button stopSpeck;   //停止说话
 
     //用户说的话
     @SuppressWarnings("unused")
     private String mRecognizerText = "";
     private StringBuffer mAsrResultBuffer;
 
-    //1.空闲  * 2.识别中  * 3.解析 * 4.播报 * 5.死亡——不播报不识别(通过activity传递枚举类)
-    /**
-     * 当前的状态为说话
-     */
+    //1.空闲   2.识别中  3.解析  4.播报  5.死亡——不播报不识别
+    //当前的状态为说话
     public int statue = Config.NUMNER_FOUR;
 
-    //线程切换状态
+    //线程检测是否为空闲状态
     private Thread check_status_is_idel;
     public boolean checking_is_idel = true;
+    //线程检测是否为播报状态
     private Thread check_status_is_speck;
     public boolean checking_is_speck = true;
 
+    //改变textview的显示
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                /**清空edittext*/
-                case Config.NUMNER_ONE:
-                    break;
-                /**聆听*/
                 case Config.NUMNER_TWO:
                     txview_status.setText("当前正在聆听");
                     break;
-                /**播报*/
                 case Config.NUMNER_THREE:
                     txview_status.setText("当前正在播报");
                     break;
-                /**点击说话*/
                 case Config.NUMNER_FOUR:
                     txview_status.setText("点击说话");
                     break;
-                /**设置获取到的文字*/
-                case Config.NUMNER_FIVE:
-                    break;
+              default:
+                  break;
             }
         }
     };
@@ -262,8 +288,6 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mview = inflater.inflate(R.layout.fragment_chat, container, false);
-
-        /**获取屏幕的宽高*/
         attain_screen_width_or_height();
         initView(mview);
         /**初始化tts*/
@@ -275,26 +299,18 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         return mview;
     }
 
-    private void hideBottomNagative() {
-        View decorView = getActivity().getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE
-                | View.SYSTEM_UI_FLAG_LOW_PROFILE;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
 
-    /**
-     * 初始化语音播报
+
+    /*********************************************初始化语音播报**************************************************************
+     * 传入播报和识别的接口
      */
     private InitTts initTts;
     private InitTts.Interface_give_fragment_to_use minterface;
     private void initTts() {
         initTts = InitTts.getInstance(getActivity());
         /**接口传递到class中*/
-        if(minterface==null){
-            Log.e("initTts: ","接口为空");
+        if (minterface == null) {
+            Log.e("initTts: ", "接口为空");
             minterface = new InitTts.Interface_give_fragment_to_use() {
                 @Override
                 public void inter_showTxtRight(String str) {
@@ -318,12 +334,10 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
 
                 @Override
                 public void inter_delect_textview() {
-                    handler.sendEmptyMessage(Config.NUMNER_ONE);
                 }
 
                 @Override
                 public void inter_textview_show_recognize_word(String str) {
-                    handler.sendEmptyMessage(Config.NUMNER_FIVE);
                 }
 
                 @Override
@@ -333,17 +347,18 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     speakingend();
                     /**播报完成后，由播报转换为识别*/
                     if (statue == Config.NUMNER_FOUR) {
-                        Log.e("inter_speck_end: ","播报切换到识别" );
+                        Log.e("inter_speck_end: ", "播报切换到识别");
                         statue = Config.NUMNER_ONE;
                         initTts.setCurrent_number(15);
                     }
+                    /**
+                     * 此种状态适用于播报前，给当前的状态设置为死亡状态。就会播报完什么都不做
+                     * 专门留给第三个fragment播报用的
+                     */
                     else if (statue == Config.NUMNER_FIVE) {
-                        Log.e("inter_speck_end: ","强制打断播报，切换到死亡状态" );
-                        /**死亡状态时候，不做操作*/
-                        // TODO: 2017/11/1  专门留给第三个fragment播报用的
+                        Log.e("inter_speck_end: ", "当前死亡状态，不做操作");
                     }
                 }
-
                 @Override
                 public void inter_init_speck_to_speck_hello() {
 //        /**清空之前的数据,并更新适配器*/
@@ -367,6 +382,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                 }
             };
         }
+        /**先传接口，在初始化播报和识别。就会播报后立马转识别*/
         initTts.set_interface(minterface);
         initTts.initTts();
         /**拿到语音对象*/
@@ -374,35 +390,31 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         this.mTTSPlayer = initTts.mTTSPlayer;
     }
 
-    private void initRecycleViewListener() {
-        mAdapter.setOnRecycleViewAudioClickListenter(this);
-        mAdapter.setOnRecycleViewImageClickListenter(this);
-        mAdapter.setOnRecycleViewRichMediaClickListenter(this);
-        mAdapter.setOnRecycleViewVideoClickListenter(this);
-        mAdapter.setOnRecycleViewTextClickListenter(this);
-        mAdapter.setOnRecycleViewisSpeakingClickListenter(this);
-    }
 
+    /**************************************************初始化控件*************************************************************
+     * */
     private void initView(View view) {
+        mAsrResultBuffer = new StringBuffer();
         /**初始化RecyclerView*/
         mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
-        //适配器配置
         mAdapter = new MyRecycleViewAdapter(getContext(), data);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         //初始化监听事件
-        initRecycleViewListener();
+        mAdapter.setOnRecycleViewAudioClickListenter(this);
+        mAdapter.setOnRecycleViewImageClickListenter(this);
+        mAdapter.setOnRecycleViewRichMediaClickListenter(this);
+        mAdapter.setOnRecycleViewVideoClickListenter(this);
+        mAdapter.setOnRecycleViewTextClickListenter(this);
+        mAdapter.setOnRecycleViewisSpeakingClickListenter(this);
         /**非recyclerview相关*/
         stopSpeck = (Button) view.findViewById(R.id.stop_speck);
-
         mVolume = (ProgressBar) view.findViewById(R.id.volume_progressbar);
         txview_status = (TextView) view.findViewById(R.id.tv_speak);
-
         stopSpeck.setOnClickListener(this);
         txview_status.setOnClickListener(this);
-        mAsrResultBuffer = new StringBuffer();
     }
 
     /**
@@ -416,9 +428,10 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                 if (statue == Config.NUMNER_FOUR) {
                     mTTSPlayer.stop();
                     statue = Config.NUMNER_ONE;
-                } else if (statue == Config.NUMNER_FIVE) {
+                }
+                /**显示点击说话的时候，点击转为聆听状态*/
+                else if (statue == Config.NUMNER_FIVE) {
                     statue = Config.NUMNER_ONE;
-                    handler.sendEmptyMessage(Config.NUMNER_ONE);
                 }
                 break;
             /**当前正在播报，停止播报*/
@@ -441,12 +454,13 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                 if (statue == Config.NUMNER_ONE) {
                     /**清空stringbuffer和dittext*/
                     mAsrResultBuffer.delete(0, mAsrResultBuffer.length());
-                    handler.sendEmptyMessage(Config.NUMNER_ONE);
+                    /**状态由空闲状态切换至录音状态*/
+                    statue = Config.NUMNER_TWO;
                     /**开始识别*/
-//                    mUnderstander.init("");
+                    // TODO: 2017/11/2 是否需要加上init
+                    mUnderstander.init("");
                     mUnderstander.start();
                     /**当前正在识别*/
-                    statue = Config.NUMNER_TWO;
                     handler.sendEmptyMessage(Config.NUMNER_TWO);
                 }
             }
@@ -469,54 +483,18 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         check_status_is_speck.start();
     }
 
-
-    /*发送文本*/
-    @Override
-    public void sendText() {
-//        if (ISNETAVAILABLE) {
-//            //输入文本
-//            Editable text = mChatInput.getText();
-//            String content = text.toString().trim();
-//            if (!TextUtils.isEmpty(content)) {
-//                showTxtRight(content);
-//                getRobatQstion(content);
-//            }
-//        } else {
-//            Toast.makeText(getApplicationContext(), "网络链接异常，请检查网络状态", Toast.LENGTH_SHORT).show();
-//        }
-    }
-
-    //开启关闭语音
-    @Override
-    public void beginListener() {
-//        isToking = true;
-    }
-
-    @Override
-    public void stopListener() {
-//        isToking = false;
-    }
-
-    @Override
-    public void textChang() {
-//        setOldTimeForTouch();
-    }
-
-    @Override
-    public void isFocus() {
-//        if (mTts.isSpeaking()) {
-//            mTts.stopSpeaking();
-//        }
-    }
-
+   /**
+    * 1.点击图片的回调
+    * 2.点击音频的回调
+    * 3.点击网页的回调
+    * 4.....
+    * */
     @Override
     public void setImageClick(View view, int position) {
-
     }
 
     @Override
     public void setVideoClick(View view, int position) {
-
     }
 
     private void startIntent2Web(String path) {
@@ -571,8 +549,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         }
     }
 
-
-    // TODO: 2017/10/27 干嘛用的？
+    /**改变右边的小图标*/
     protected void speakingend() {
         for (int i = 0; i < data.size(); i++) {
             data.get(i).setPlaying(false);
@@ -923,7 +900,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
         getRobatResult.setPlaying(true);//设置最后一个播放
         mAdapter.addData(getRobatResult);
         //跳转到最后一行
-        mRecyclerView.smoothScrollToPosition(mAdapter.getTotalCount()-2);
+        mRecyclerView.smoothScrollToPosition(mAdapter.getTotalCount() - 2);
     }
 
     /**
@@ -957,13 +934,13 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     public void tranTxtToSpeak(final String question) {
         if (statue == Config.NUMNER_FOUR) {
             mTTSPlayer.stop();
-//            mTTSPlayer.init("");
         }
         /**初始化语音合成*/
+        // TODO: 2017/11/2 是否加上init
 //        mTTSPlayer.init("");
-        mTTSPlayer.playText(question);
         /**当前正在播报*/
         statue = Config.NUMNER_FOUR;
+        mTTSPlayer.playText(question);
         handler.sendEmptyMessage(Config.NUMNER_THREE);
     }
 }

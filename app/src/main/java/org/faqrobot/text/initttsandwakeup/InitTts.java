@@ -221,10 +221,10 @@ public class InitTts {
                                         }
                                         // TODO: 2017/10/26  右边显示用户说的话
                                         minterface_give_fragment_to_use.inter_showTxtRight(result.toString().trim());
-                                        // TODO: 2017/10/26   请求nlp
-                                        minterface_give_fragment_to_use.inter_getRobatQstion(result.toString().trim());
                                         // TODO: 2017/10/26  当前正在播报
                                         minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
+                                        // TODO: 2017/10/26   请求nlp
+                                        minterface_give_fragment_to_use.inter_getRobatQstion(result.toString().trim());
                                     } else if (result.length() == 2) {
                                         Util_Log_Toast.log_e(getContext(), "用户说一个字，不识别");
                                         // TODO: 2017/10/26  当前空闲状态
@@ -404,6 +404,9 @@ public class InitTts {
 
     /**
      * 释放资源
+     * 1.计时器
+     * 2.识别和播报的对象
+     * 3.变量
      */
     public void release_value() {
         /**计时未结束时候切屏——计时结束后直接释放*/
@@ -414,11 +417,9 @@ public class InitTts {
             timer_twenty_s = null;
         }
         if (mUnderstander != null) {
-//            mUnderstander.stop();
             mUnderstander = null;
         }
         if (mTTSPlayer != null) {
-//            mTTSPlayer.stop();
             mTTSPlayer = null;
         }
         /**清空3变量*/
