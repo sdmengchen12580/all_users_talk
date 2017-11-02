@@ -24,8 +24,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.unisound.client.SpeechSynthesizer;
 import com.unisound.client.SpeechUnderstander;
+
 import org.faqrobot.text.MyApplication;
 import org.faqrobot.text.R;
 import org.faqrobot.text.adapter.MyRecycleViewAdapter;
@@ -44,8 +46,10 @@ import org.faqrobot.text.ui.rece_broad.MyMusicServer;
 import org.faqrobot.text.ui.webviewactivity.WebActivity;
 import org.faqrobot.text.utils.HtmlParser;
 import org.faqrobot.text.utils.TimeUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -330,14 +334,12 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     speakingend();
                     /**播报完成后，由播报转换为识别*/
                     if (statue == Config.NUMNER_FOUR) {
-                        statue = Config.NUMNER_ONE;
-                        initTts.setCurrent_number(15);
-                    }
-                    else if (statue == Config.NUMNER_SIX) {
+                        Log.e("inter_speck_end: ","播报切换到识别" );
                         statue = Config.NUMNER_ONE;
                         initTts.setCurrent_number(15);
                     }
                     else if (statue == Config.NUMNER_FIVE) {
+                        Log.e("inter_speck_end: ","强制打断播报，切换到死亡状态" );
                         /**死亡状态时候，不做操作*/
                         // TODO: 2017/11/1  专门留给第三个fragment播报用的
                     }
@@ -424,7 +426,6 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
             case R.id.stop_speck:
                 if (statue == Config.NUMNER_FOUR) {
                     mTTSPlayer.stop();
-                    mTTSPlayer.init("");
                     statue = Config.NUMNER_ONE;
                 }
                 break;
@@ -443,7 +444,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                     mAsrResultBuffer.delete(0, mAsrResultBuffer.length());
                     handler.sendEmptyMessage(Config.NUMNER_ONE);
                     /**开始识别*/
-                    mUnderstander.init("");
+//                    mUnderstander.init("");
                     mUnderstander.start();
                     /**当前正在识别*/
                     statue = Config.NUMNER_TWO;
@@ -587,7 +588,7 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
                 data.get(i).setPlaying(false);
             }
             mTTSPlayer.stop();
-            mTTSPlayer.init("");
+//            mTTSPlayer.init("");
             imageview.setImageResource(R.drawable.stopspeak);
             mAdapter.notifyDataSetChanged();
         } else {
@@ -957,10 +958,10 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     public void tranTxtToSpeak(final String question) {
         if (statue == Config.NUMNER_FOUR) {
             mTTSPlayer.stop();
-            mTTSPlayer.init("");
+//            mTTSPlayer.init("");
         }
         /**初始化语音合成*/
-        mTTSPlayer.init("");
+//        mTTSPlayer.init("");
         mTTSPlayer.playText(question);
         /**当前正在播报*/
         statue = Config.NUMNER_FOUR;

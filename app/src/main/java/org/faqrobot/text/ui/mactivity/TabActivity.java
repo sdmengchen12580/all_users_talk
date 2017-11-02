@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,11 +48,15 @@ public class TabActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        viewPager = (ChildViewPager) findViewById(R.id.viewPager);
+        /**初始化3个fragment*/
+        chatFragment = new ChatFragment();
+        messageFragment = new MessageFragment();
+        relQuesstionsFragment = new RelQuesstionsFragment();
         /**
          * viewPager添加fragment适配器
          * viewPager监听->Button切换
          */
+        viewPager = (ChildViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(listener);
         /**先显示聊天界面*/
@@ -62,9 +67,9 @@ public class TabActivity extends AppCompatActivity {
     /**
      * 3个fragment的管理类
      */
-    public static ChatFragment chatFragment = new ChatFragment();
-    public static MessageFragment messageFragment = new MessageFragment();
-    public static RelQuesstionsFragment relQuesstionsFragment = new RelQuesstionsFragment();
+    public static ChatFragment chatFragment ;
+    public static MessageFragment messageFragment ;
+    public static RelQuesstionsFragment relQuesstionsFragment ;
     private FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
         @Override
         public Fragment getItem(int position) {
@@ -102,28 +107,23 @@ public class TabActivity extends AppCompatActivity {
                 if (chatFragment.statue == Config.NUMNER_FOUR) {
                     chatFragment.mTTSPlayer.stop();
                     chatFragment.statue = Config.NUMNER_FIVE;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            chatFragment.txview_status.setText("点击说话");
-                            chatFragment.mVolume.setProgress(0);
-                        }
+                    runOnUiThread(() -> {
+                        Log.e("onPageSelected: ","当前在播报，切换到死亡状态。方便播报完就不播报了" );
+                        chatFragment.txview_status.setText("点击说话");
+                        chatFragment.mVolume.setProgress(0);
                     });
                 } else if (chatFragment.statue == Config.NUMNER_ONE || chatFragment.statue == Config.NUMNER_TWO
                         || chatFragment.statue == Config.NUMNER_THREE) {
                     chatFragment.mUnderstander.cancel();
-                    chatFragment.statue = Config.NUMNER_FIVE;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            chatFragment.txview_status.setText("点击说话");
-                            chatFragment.mVolume.setProgress(0);
-                        }
+                    runOnUiThread(() -> {
+                        Log.e( "onPageSelected: ","状态为："+chatFragment.statue+"     即将切换成死亡状态" );
+                        Log.e("onPageSelected: ","当前在识别，录音，空闲状态，切换到死亡状态。方便播报完就不播报了" );
+                        chatFragment.statue = Config.NUMNER_FIVE;
+                        chatFragment.txview_status.setText("点击说话");
+                        chatFragment.mVolume.setProgress(0);
                     });
                 }
             } else {
-                // TODO: 2017/11/1 播报状态
-                chatFragment.statue = Config.NUMNER_FOUR;
                 /**让线程一直运行着*/
                 chatFragment.checking_is_idel = true;
                 chatFragment.checking_is_speck = true;

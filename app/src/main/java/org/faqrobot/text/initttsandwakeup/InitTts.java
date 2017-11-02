@@ -1,6 +1,7 @@
 package org.faqrobot.text.initttsandwakeup;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.unisound.client.SpeechConstants;
@@ -10,6 +11,7 @@ import com.unisound.client.SpeechUnderstander;
 import com.unisound.client.SpeechUnderstanderListener;
 
 import org.faqrobot.text.constant.Config;
+import org.faqrobot.text.ui.mactivity.NewImageChangeActivity;
 import org.faqrobot.text.utils.Util_Log_Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +30,10 @@ public class InitTts {
     /**
      * 单例
      */
-    private static Context context;
+    private static Activity context;
     private static InitTts initTts = null;
 
-    public static synchronized InitTts getInstance(Context context) {
+    public static synchronized InitTts getInstance(Activity context) {
         if (initTts == null) {
             initTts = new InitTts(context);
         }
@@ -133,8 +135,7 @@ public class InitTts {
     /**
      * 没选择在构造方法中直接初始化语音识别和播报
      */
-    private InitTts(Context context)
-    {
+    private InitTts(Activity context) {
         this.context = context;
         mAsrResultBuffer = new StringBuffer();
         /**初始化计时器*/
@@ -144,8 +145,7 @@ public class InitTts {
     /**
      * 初始化语音识别
      */
-    public void initTts()
-    {
+    public void initTts() {
         initRecognizer();
         initSpecker();
     }
@@ -153,8 +153,7 @@ public class InitTts {
     /**
      * 初始化计时器
      */
-    private void initTimer()
-    {
+    private void initTimer() {
         timer_twenty_s = new Timer();
         timer_twenty_s.schedule(new TimerTask() {
             @Override
@@ -165,9 +164,9 @@ public class InitTts {
                     Util_Log_Toast.log_e(getContext(), "计时结束");
                     timer_twenty_s.cancel();
                     // TODO: 2017/10/25 调到下个activity
-//                    /**调到下个界面*/
-//                    startActivity(new Intent(BaseChatActivity.this, TextActivity.class));
-//                    finish();
+                    /**调到下个界面*/
+                    context.startActivity(new Intent(context, NewImageChangeActivity.class));
+                    context.finish();
                 }
             }
         }, 0, 1000);
@@ -176,8 +175,7 @@ public class InitTts {
     /**
      * 初始化语音识别
      */
-    private void initRecognizer()
-    {
+    private void initRecognizer() {
         /**创建语音识别对象，appKey和 secret通过 http://dev.hivoice.cn/ 网站申请*/
         mUnderstander = new SpeechUnderstander(context, Config.appKey, Config.secret);
         /**开启可变结果*/
@@ -215,6 +213,12 @@ public class InitTts {
                                         /**用户交互了，重新计时*/
                                         current_number = 15;
                                         Util_Log_Toast.log_e(getContext(), "用户说话为：" + result.toString());
+                                        if (result.toString().trim().contains("再见")||result.toString().trim().contains("拜拜")) {
+                                            /**调到下个界面*/
+                                            context.startActivity(new Intent(context, NewImageChangeActivity.class));
+                                            context.finish();
+                                            return;
+                                        }
                                         // TODO: 2017/10/26  右边显示用户说的话
                                         minterface_give_fragment_to_use.inter_showTxtRight(result.toString().trim());
                                         // TODO: 2017/10/26   请求nlp
@@ -302,8 +306,7 @@ public class InitTts {
     /**
      * 语音解析工具方法
      */
-    private void asrResultOperate(String jsonResult)
-    {
+    private void asrResultOperate(String jsonResult) {
         JSONObject asrJson;
         try {
             asrJson = new JSONObject(jsonResult);
@@ -334,11 +337,12 @@ public class InitTts {
     /**
      * 初始化语音合成
      */
-    public void initSpecker()
-    {
+    public void initSpecker() {
         /**创建语音合成（合成就是播报）对象*/
         mTTSPlayer = new SpeechSynthesizer(context, Config.appKey, Config.secret);
         mTTSPlayer.setOption(SpeechConstants.TTS_SERVICE_MODE, SpeechConstants.TTS_SERVICE_MODE_NET);
+        mTTSPlayer.setOption(SpeechConstants.TTS_KEY_VOICE_NAME,"lzl");
+        mTTSPlayer.setOption(SpeechConstants.TTS_KEY_VOICE_SPEED,70);
         /**设置语音合成回调监听*/
         mTTSPlayer.setTTSListener(new SpeechSynthesizerListener() {
             @Override

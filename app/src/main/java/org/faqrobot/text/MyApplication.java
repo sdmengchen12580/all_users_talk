@@ -71,7 +71,7 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         /**检测内存泄露*/
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
         /**检测网络*/
         checkNetClass= CheckNetClass.getInstanc(mContext);
     }

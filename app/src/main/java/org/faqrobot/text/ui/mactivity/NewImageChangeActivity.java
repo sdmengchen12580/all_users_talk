@@ -58,7 +58,7 @@ public class NewImageChangeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_image_change);
         initView();
         initGesture();
-//        initWakeUp();
+        initWakeUp();
     }
 
     /**初始化语音唤醒*/
@@ -66,10 +66,11 @@ public class NewImageChangeActivity extends AppCompatActivity {
     {
         mUnderstander = new SpeechUnderstander(this, Config.appKey, null);
         mUnderstander.setOption(SpeechConstants.ASR_SERVICE_MODE, SpeechConstants.ASR_SERVICE_MODE_LOCAL);
+        mUnderstander.setOnlineWakeupWord(list_wakeup_words);
         mUnderstander.setListener(new SpeechUnderstanderListener() {
             @Override
             public void onResult(int type, String jsonResult) {
-//                toastMessage("(唤醒成功)");
+                toastMessage("(唤醒成功)");
             }
             @Override
             public void onEvent(int type, int timeMs) {
@@ -104,7 +105,8 @@ public class NewImageChangeActivity extends AppCompatActivity {
     }
 
     /**吐司的工具类*/
-    private void toastMessage(String message) {
+    private void toastMessage(String message)
+    {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -202,8 +204,8 @@ public class NewImageChangeActivity extends AppCompatActivity {
         mViewFlipper = null;
         customGestureDetector = null;
         gestureDetector= null;
-//        mUnderstander.cancel();
-//        mUnderstander.release(SpeechConstants.ASR_RELEASE_ENGINE, "");
-//        mUnderstander = null;
+        mUnderstander.cancel();
+        mUnderstander.release(SpeechConstants.ASR_RELEASE_ENGINE, "");
+        mUnderstander = null;
     }
 }
