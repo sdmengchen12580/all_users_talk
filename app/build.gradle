@@ -47,12 +47,17 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknife_version"
     //retrofit2
     compile "com.squareup.retrofit2:retrofit:$retrofit2_version"
+
     compile "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+
     compile "com.squareup.retrofit2:adapter-rxjava:$retrofit2_version"
+
     compile "io.reactivex:rxjava:$rxjava_version"
+
     compile "io.reactivex:rxandroid:$rxjava_version"
     //interceptor
     compile "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+
     compile 'com.jude:rollviewpager:1.2.9'
     /**circleimageview*/
     compile 'de.hdodenhof:circleimageview:2.1.0'

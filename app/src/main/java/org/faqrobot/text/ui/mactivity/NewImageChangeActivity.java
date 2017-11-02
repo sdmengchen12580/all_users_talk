@@ -4,26 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
 import com.unisound.client.SpeechConstants;
 import com.unisound.client.SpeechUnderstander;
 import com.unisound.client.SpeechUnderstanderListener;
-
 import org.faqrobot.text.R;
 import org.faqrobot.text.constant.Config;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewImageChangeActivity extends AppCompatActivity {
 
     /**************************************对象*************************************************
-     * todo 1.图片滑动的时候会多滑动一张   2.图片用setimagerecouce或者bitmap会有问题 3.唤醒加了没用
+     * todo 1.图片滑动的时候会多滑动一张   2.图片用setimagerecouce或者bitmap会有问题
      * 1.控件
      * 2.手势监听
      * 3.图片资源
@@ -33,6 +31,7 @@ public class NewImageChangeActivity extends AppCompatActivity {
      * 5.语音唤醒对象
      * 6.存储屏幕的宽高对象
      * 7.语音唤醒的关键词集合
+     * 8.人臉檢測的surfaceview
      * */
     private ViewFlipper mViewFlipper;
     private GestureDetector gestureDetector;
@@ -48,7 +47,6 @@ public class NewImageChangeActivity extends AppCompatActivity {
     int screenHeigh;
     List<String> list_wakeup_words;
     private static final String WAKEUP_TAG = "wakeup";
-
 
     /**************************************oncreat******************************************/
     @Override
@@ -66,28 +64,32 @@ public class NewImageChangeActivity extends AppCompatActivity {
     {
         mUnderstander = new SpeechUnderstander(this, Config.appKey, null);
         mUnderstander.setOption(SpeechConstants.ASR_SERVICE_MODE, SpeechConstants.ASR_SERVICE_MODE_LOCAL);
-        mUnderstander.setOnlineWakeupWord(list_wakeup_words);
+//        mUnderstander.setOnlineWakeupWord(list_wakeup_words);
         mUnderstander.setListener(new SpeechUnderstanderListener() {
             @Override
             public void onResult(int type, String jsonResult) {
-                toastMessage("(唤醒成功)");
+                Log.e("onResult: ","唤醒成功" );
             }
             @Override
             public void onEvent(int type, int timeMs) {
                 switch (type) {
                     case SpeechConstants.WAKEUP_EVENT_RECOGNITION_SUCCESS:
-                        toastMessage("(唤醒成功)");
+                        Log.e("onResult: ","唤醒成功" );
                         startActivity(new Intent(NewImageChangeActivity.this,TabActivity.class));
+                        /**喚醒成功后，釋放資源*/
+                        mUnderstander.cancel();
+                        mUnderstander.release(SpeechConstants.ASR_RELEASE_ENGINE, "");
+                        mUnderstander = null;
                         finish();
                         break;
                     case SpeechConstants.ASR_EVENT_RECORDING_START:
-                        toastMessage("语音唤醒已开始");
+                        Log.e("onResult: ","语音唤醒已开始");
                         break;
                     case SpeechConstants.ASR_EVENT_RECORDING_STOP:
-                        toastMessage("语音唤醒录音已停止");
+                        Log.e("onResult: ","语音唤醒录音已停止");
                         break;
                     case SpeechConstants.ASR_EVENT_ENGINE_INIT_DONE:
-                        toastMessage("引擎初始化完成");
+                        Log.e("onResult: ","引擎初始化完成");
                         break;
                     default:
                         break;
@@ -204,8 +206,5 @@ public class NewImageChangeActivity extends AppCompatActivity {
         mViewFlipper = null;
         customGestureDetector = null;
         gestureDetector= null;
-        mUnderstander.cancel();
-        mUnderstander.release(SpeechConstants.ASR_RELEASE_ENGINE, "");
-        mUnderstander = null;
     }
 }

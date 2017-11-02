@@ -23,20 +23,39 @@ import java.util.ArrayList;
 public class TabActivity extends AppCompatActivity {
 
 
-    public ChildViewPager viewPager;
+    /**
+     * 1.帶衝突的viewpager
+     * 2.3個fragment
+     * 3.屏幕的寬高
+     * 4.手勢監聽的對象
+     */
+    private ChildViewPager viewPager;
+    public static ChatFragment chatFragment;
+    public static MessageFragment messageFragment;
+    public static RelQuesstionsFragment relQuesstionsFragment;
+    private int screenWidth;
+    private int screenHeigh;
+    private GestureDetector mDetector;
+    private MyGestureListener mgListener;
 
+
+    /**
+     * onCreate
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         hideBottomNagative();
         setContentView(R.layout.activity_tab);
         initView();
+        /**手勢監聽*/
         attain_screen_width_or_height();
         initGesture();
     }
 
+    /**
+     * 全屏
+     */
     private void hideBottomNagative() {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -47,6 +66,9 @@ public class TabActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
+    /**
+     * 初始化fragment和viewpager
+     */
     private void initView() {
         /**初始化3个fragment*/
         chatFragment = new ChatFragment();
@@ -63,13 +85,9 @@ public class TabActivity extends AppCompatActivity {
         viewPager.setCurrentItem(1, true);
     }
 
-
     /**
      * 3个fragment的管理类
      */
-    public static ChatFragment chatFragment ;
-    public static MessageFragment messageFragment ;
-    public static RelQuesstionsFragment relQuesstionsFragment ;
     private FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
         @Override
         public Fragment getItem(int position) {
@@ -92,7 +110,9 @@ public class TabActivity extends AppCompatActivity {
     };
 
     /**
-     * viewPager监听->Button切换
+     * viewPager监听->判斷當前的位置，做對應操作
+     * 1.不在聊天界面，状态切换为死亡状态。清空data的数据
+     * 2.聊天界面，
      */
     private ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -102,13 +122,12 @@ public class TabActivity extends AppCompatActivity {
         /**当前选中的fragment*/
         @Override
         public void onPageSelected(int position) {
-            /**不在聊天界面，状态切换为死亡状态。清空data的数据*/
             if (position != 1) {
                 if (chatFragment.statue == Config.NUMNER_FOUR) {
                     chatFragment.mTTSPlayer.stop();
                     chatFragment.statue = Config.NUMNER_FIVE;
                     runOnUiThread(() -> {
-                        Log.e("onPageSelected: ","当前在播报，切换到死亡状态。方便播报完就不播报了" );
+                        Log.e("onPageSelected: ", "当前在播报，切换到死亡状态。方便播报完就不播报了");
                         chatFragment.txview_status.setText("点击说话");
                         chatFragment.mVolume.setProgress(0);
                     });
@@ -116,15 +135,14 @@ public class TabActivity extends AppCompatActivity {
                         || chatFragment.statue == Config.NUMNER_THREE) {
                     chatFragment.mUnderstander.cancel();
                     runOnUiThread(() -> {
-                        Log.e( "onPageSelected: ","状态为："+chatFragment.statue+"     即将切换成死亡状态" );
-                        Log.e("onPageSelected: ","当前在识别，录音，空闲状态，切换到死亡状态。方便播报完就不播报了" );
+                        Log.e("onPageSelected: ", "當前状态为：" + chatFragment.statue + "即将切换成死亡状态，方便播报完就不播报了");
                         chatFragment.statue = Config.NUMNER_FIVE;
                         chatFragment.txview_status.setText("点击说话");
                         chatFragment.mVolume.setProgress(0);
                     });
                 }
             } else {
-                /**让线程一直运行着*/
+                /**其他activity切換回來，让线程一直运行着*/
                 chatFragment.checking_is_idel = true;
                 chatFragment.checking_is_speck = true;
             }
@@ -138,9 +156,6 @@ public class TabActivity extends AppCompatActivity {
     /**
      * 获取屏幕的宽高
      */
-    int screenWidth;
-    int screenHeigh;
-
     public void attain_screen_width_or_height() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -157,11 +172,11 @@ public class TabActivity extends AppCompatActivity {
         mDetector = new GestureDetector(this, mgListener);
     }
 
-
     /**
      * 自定义一个GestureListener
      */
-    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener
+    {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float v, float v1) {
 //            if (e1.getY() > screenHeigh * 4 / 5 && e1.getY() - e2.getY() > MIN_MOVE) {
@@ -174,35 +189,36 @@ public class TabActivity extends AppCompatActivity {
     }
 
     /**
-     * 手势监听
+     * 手勢監聽傳給onTouchEvent
      */
-    private GestureDetector mDetector;
-    private final static int MIN_MOVE = 100;   //最小距离
-    private MyGestureListener mgListener;
-
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event)
+    {
         return mDetector.onTouchEvent(event);
     }
 
-
+    /**
+     * 釋放資源
+     */
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
         chatFragment = null;
         messageFragment = null;
         relQuesstionsFragment = null;
     }
 
-    /**********************************存接口的集合**********************************************/
-    public interface MyOnTouchListener {
+    /**********************************存接口的集合——手勢監聽用的**********************************************/
+    public interface MyOnTouchListener
+    {
         boolean onTouch(MotionEvent ev);
     }
 
     private ArrayList<MyOnTouchListener> onTouchListeners = new ArrayList<>(1);
-
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
         for (MyOnTouchListener listener : onTouchListeners) {
             if (listener != null) {
                 listener.onTouch(ev);
@@ -210,12 +226,12 @@ public class TabActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
-
-    public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+    public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener)
+    {
         onTouchListeners.add(myOnTouchListener);
     }
-
-    public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+    public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener)
+    {
         onTouchListeners.remove(myOnTouchListener);
     }
 }

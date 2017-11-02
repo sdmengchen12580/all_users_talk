@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/transparent"
+    android:id="@+id/carlife_scroll"
     android:orientation="vertical">
 
     <LinearLayout
@@ -38,9 +39,11 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:textColor="#000000">

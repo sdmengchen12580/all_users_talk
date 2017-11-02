@@ -261,9 +261,8 @@ public class ChatFragment extends Fragment implements ChatView, MyRecycleViewAda
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /**全屏*/
-        hideBottomNagative();
         View mview = inflater.inflate(R.layout.fragment_chat, container, false);
+
         /**获取屏幕的宽高*/
         attain_screen_width_or_height();
         initView(mview);
