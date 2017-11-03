@@ -3,7 +3,7 @@ package org.faqrobot.text;
 
 import android.app.Application;
 import android.content.Context;
-import com.squareup.leakcanary.LeakCanary;
+
 import org.faqrobot.text.initttsandwakeup.CheckNetClass;
 
 /**
@@ -28,7 +28,7 @@ public class MyApplication extends Application {
     /**
      * 全局的accesstoken值
      */
-    private String access_token;
+    private String access_token=null;
 
     public String getAccess_token() {
         return access_token;

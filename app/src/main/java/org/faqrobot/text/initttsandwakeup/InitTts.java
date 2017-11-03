@@ -74,12 +74,7 @@ public class InitTts {
         /**
          * 文字显示右边
          */
-        void inter_showTxtRight(String str);
-
-        /**
-         * 问题请求后台网络
-         */
-        void inter_getRobatQstion(String str);
+        void inter_showTxtRight_and_get_robotanswer(String str);
 
         /**
          * 设置当前状态
@@ -92,24 +87,10 @@ public class InitTts {
         void inter_volume_change(int volume);
 
         /**
-         * 删除textview的内容
-         */
-        void inter_delect_textview();
-
-        /**
-         * text显示识别的内容
-         */
-        void inter_textview_show_recognize_word(String str);
-
-        /**
          * 语音识别结束
          */
         void inter_speck_end();
 
-        /**
-         * 初始化合成说hello
-         */
-        void inter_init_speck_to_speck_hello();
     }
 
     /**
@@ -145,7 +126,7 @@ public class InitTts {
     /**
      * 初始化语音识别
      */
-    public void initTts() {
+    public synchronized void initTts() {
         initRecognizer();
         initSpecker();
     }
@@ -173,7 +154,8 @@ public class InitTts {
     }
 
     /**
-     * 初始化语音识别
+     * 1.初始化语音识别
+     * 2.识别出来的文字，有可能为空。如果为空的时候可以去重启识别
      */
     private void initRecognizer() {
         /**创建语音识别对象，appKey和 secret通过 http://dev.hivoice.cn/ 网站申请*/
@@ -184,9 +166,8 @@ public class InitTts {
         mUnderstander.setOption(SpeechConstants.NLU_SCENARIO, "videoDefault");
         /**在收到 onRecognizerStart 回调前，录音设备没有打开，请添加界面等待提示*/
         /**修改识别语音*/
-        mUnderstander.setOption(SpeechConstants.ASR_SAMPLING_RATE, arraySample[1]);
+        mUnderstander.setOption(SpeechConstants.ASR_SAMPLING_RATE, arraySample[0]);
         mUnderstander.setOption(SpeechConstants.ASR_LANGUAGE, arrayLanguageStr[0]);
-
         // TODO: 2017/9/28  保存录音数据——数据保存到哪里？
         // TODO: 2017/9/28   recognizer.setRecordingDataEnable(true);
         mUnderstander.setListener(new SpeechUnderstanderListener() {
@@ -206,7 +187,7 @@ public class InitTts {
                                 String status = jsonObject.getString("result_type");
                                 Util_Log_Toast.log_e("jsonObject = " + jsonObject.toString());
                                 if (status.equals("full")) {
-                                    String result = (String) jsonObject
+                                    String  result = (String) jsonObject
                                             .get("recognition_result");
                                     /**jsonResult有结果，就能解析出识别到用户说的话-并且长度大于1*/
                                     if (jsonResult != null && result.length() > 2) {
@@ -219,17 +200,17 @@ public class InitTts {
                                             context.finish();
                                             return;
                                         }
-                                        // TODO: 2017/10/26  右边显示用户说的话
-                                        minterface_give_fragment_to_use.inter_showTxtRight(result.toString().trim());
-                                        // TODO: 2017/10/26  当前正在播报
-                                        minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_FOUR);
-                                        // TODO: 2017/10/26   请求nlp
-                                        minterface_give_fragment_to_use.inter_getRobatQstion(result.toString().trim());
-                                    } else if (result.length() == 2) {
+                                        // TODO: 2017/10/26  右边显示用户说的话——话请求后台——状态改为播报
+                                        minterface_give_fragment_to_use.inter_showTxtRight_and_get_robotanswer(result.toString().trim());
+                                        /**清空result*/
+                                    }
+                                    else if (result.length() == 2) {
+                                        /**清空result*/
                                         Util_Log_Toast.log_e(getContext(), "用户说一个字，不识别");
                                         // TODO: 2017/10/26  当前空闲状态
                                         minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
-                                    } else if (result.isEmpty()) {
+                                    }
+                                    else if (result.isEmpty()) {
                                         Util_Log_Toast.log_e(getContext(), "用户没说话");
                                         // TODO: 2017/10/26  当前空闲状态
                                         minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
@@ -252,14 +233,15 @@ public class InitTts {
             public void onEvent(int type, int timeMs) {
                 switch (type) {
                     /**1.用户可以说话了*/
+                    // TODO: 2017/10/26 当前打开录音设备
                     case SpeechConstants.ASR_EVENT_RECORDING_START:
-                        Util_Log_Toast.log_e(getContext(), "录音设备打开，开始识别，用户可以开始说话");
-                        // TODO: 2017/10/26 当前打开录音设备
+                        Util_Log_Toast.log_e(getContext(), "录音设备打开，开始识别，用户可以开始说话。状态为recoder");
                         minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_TWO);
                         break;
                     /**2.说话开始*/
                     case SpeechConstants.ASR_EVENT_SPEECH_DETECTED:
                         Util_Log_Toast.log_e(getContext(), "用户开始说话");
+                        current_number = 15;
                         break;
                     /**3.音量的改变*/
                     case SpeechConstants.ASR_EVENT_VOLUMECHANGE:
@@ -274,7 +256,13 @@ public class InitTts {
                         break;
                     /**4.识别完*/
                     case SpeechConstants.ASR_EVENT_NET_END:
-                        Util_Log_Toast.log_e(getContext(), "识别完成");
+                        Util_Log_Toast.log_e(getContext(), "识别完成，判断识别结果去考虑是否重启识别");
+                        // TODO: 2017/11/3 为一个字或者没说话后重启识别
+//                        if(result==null||result.isEmpty()||result.length()==2){
+//                            result = null;
+//                            minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_ONE);
+//                            return;
+//                        }
                         break;
                     /**5.超时未说话*/
                     case SpeechConstants.ASR_EVENT_VAD_TIMEOUT:
@@ -283,8 +271,7 @@ public class InitTts {
                         break;
                     /**6.录音停止*/
                     case SpeechConstants.ASR_EVENT_RECORDING_STOP:
-                        Util_Log_Toast.log_e(getContext(), "录音停止，即将进入解析用户言语");
-                        // TODO: 2017/10/26 当前正在识别解析用户说的话
+                        Util_Log_Toast.log_e(getContext(), "录音停止，即将进入解析用户言语。状态为recognize");
                         minterface_give_fragment_to_use.inter_current_status(Config.NUMNER_THREE);
                         break;
                     default:
@@ -313,8 +300,6 @@ public class InitTts {
             JSONArray asrJsonArray = asrJson.getJSONArray("net_asr");
             JSONObject asrJsonObject = asrJsonArray.getJSONObject(0);
             String asrJsonStatus = asrJsonObject.getString("result_type");
-            // TODO: 2017/10/26 清空显示当前说的话的textview-后期可以删除
-            minterface_give_fragment_to_use.inter_delect_textview();
 //            if (asrJsonStatus.equals("change")) {
 //                mRecognizerResultText.append(mAsrResultBuffer.toString());
 //                mRecognizerResultText.append(asrJsonObject.getString("recognition_result"));
@@ -323,10 +308,10 @@ public class InitTts {
 //                mRecognizerResultText.append(mAsrResultBuffer.toString());
 //            }
             if (!asrJsonStatus.equals("change")) {
+                /**清空*/
+                mAsrResultBuffer.delete(0, mAsrResultBuffer.length());
                 mAsrResultBuffer.append(asrJsonObject.getString("recognition_result"));
                 // TODO: 2017/10/26 textview设置当前文字为解析的结果文字
-                // mRecognizerResultText.append(mAsrResultBuffer.toString());
-                minterface_give_fragment_to_use.inter_textview_show_recognize_word(mAsrResultBuffer.toString());
                 Util_Log_Toast.log_e(getContext(), mAsrResultBuffer.toString() + "");
             }
         } catch (JSONException e) {

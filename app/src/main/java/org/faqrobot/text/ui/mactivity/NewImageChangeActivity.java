@@ -56,7 +56,7 @@ public class NewImageChangeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_image_change);
         initView();
         initGesture();
-        initWakeUp();
+//        initWakeUp();
     }
 
     /**初始化语音唤醒*/
